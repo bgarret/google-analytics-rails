@@ -7,7 +7,7 @@ module GoogleAnalytics::Rails
 
       queue = GAQ.new
       queue << GAQ::Events::SetAccount.new(GAR.tracker)
-      queue << GAQ::Events::TrackPageView.new
+      queue << GAQ::Events::TrackPageview.new
       queue << GAQ::Events::TrackPageLoadTime.new
 
       queue.to_s
