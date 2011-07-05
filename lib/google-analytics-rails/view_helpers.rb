@@ -10,7 +10,7 @@ module GoogleAnalytics::Rails
       queue << GAQ::Events::TrackPageview.new
       queue << GAQ::Events::TrackPageLoadTime.new
 
-      queue.to_s
+      queue.to_s.html_safe
     end
 
     def analytics_track_event(category, action, label, value)
@@ -21,7 +21,7 @@ module GoogleAnalytics::Rails
 
     def analytics_render_event(event)
       raise ArgumentError, "Tracker must be set! Did you set GAR.tracker ?" unless GAR.valid_tracker?
-      GAQ::EventRenderer.new(event, GAR.tracker).to_s
+      GAQ::EventRenderer.new(event, GAR.tracker).to_s.html_safe
     end
   end
 end
