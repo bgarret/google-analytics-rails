@@ -3,7 +3,7 @@ require 'google_analytics_tools'
 module GoogleAnalytics::Rails
   module ViewHelpers
     def analytics_init
-      raise ArgumentError, "Tracker must be set! Run 'rake google-analytics:install' to create the initializer." if GAR.tracker.blank?
+      raise ArgumentError, "Tracker must be set! Did you set GAR.tracker ?" unless GAR.valid_tracker?
 
       queue = GAQ.new
       queue << GAQ::Events::SetAccount.new(GAR.tracker)
@@ -20,7 +20,7 @@ module GoogleAnalytics::Rails
     private
 
     def analytics_render_event(event)
-      raise ArgumentError, "Tracker must be set! Run 'rake google-analytics:install' to create the initializer." if GAR.tracker.blank?
+      raise ArgumentError, "Tracker must be set! Did you set GAR.tracker ?" unless GAR.valid_tracker?
       GAQ::EventRenderer.new(event, GAR.tracker).to_s
     end
   end
