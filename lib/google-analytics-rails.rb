@@ -1,7 +1,1 @@
-module Google
-  module Analytics
-    module Rails
-      # Your code goes here...
-    end
-  end
-end
+require 'google-analytics-rails/railtie' if defined?(Rails)
