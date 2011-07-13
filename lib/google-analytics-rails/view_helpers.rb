@@ -17,6 +17,18 @@ module GoogleAnalytics::Rails
       analytics_render_event(GAQ::Events::TrackEvent.new(category, action, label, value))
     end
 
+    def analytics_add_transaction(order_id, store_name, total, tax, shipping, city, state_or_province, country)
+      analytics_render_event(GAQ::Events::ECommerce::AddTransaction.new(order_id, store_name, total, tax, shipping, city, state_or_province, country))
+    end
+
+    def analytics_add_item(order_id, product_id, product_name, product_variation, unit_price, quantity)
+      analytics_render_event(GAQ::Events::ECommerce::AddItem.new(order_id, product_id, product_name, product_variation, unit_price, quantity))
+    end
+
+    def analytics_track_transaction
+      analytics_render_event(GAQ::Events::ECommerce::TrackTransaction.new)
+    end
+
     private
 
     def analytics_render_event(event)
