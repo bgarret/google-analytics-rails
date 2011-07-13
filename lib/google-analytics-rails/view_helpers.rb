@@ -33,7 +33,12 @@ module GoogleAnalytics::Rails
 
     def analytics_render_event(event)
       raise ArgumentError, "Tracker must be set! Did you set GAR.tracker ?" unless GAR.valid_tracker?
-      GAQ::EventRenderer.new(event, GAR.tracker).to_s.html_safe
+      result = <<-JAVASCRIPT
+<script type="text/javascript">
+  #{GAQ::EventRenderer.new(event, GAR.tracker).to_s}
+</script>
+      JAVASCRIPT
+      result.html_safe
     end
   end
 end
