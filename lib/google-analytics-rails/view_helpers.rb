@@ -2,13 +2,17 @@ require 'google_analytics_tools'
 
 module GoogleAnalytics::Rails
   module ViewHelpers
-    def analytics_init
+    def analytics_init(*additionalEvents)
       raise ArgumentError, "Tracker must be set! Did you set GAR.tracker ?" unless GAR.valid_tracker?
 
       queue = GAQ.new
       queue << GAQ::Events::SetAccount.new(GAR.tracker)
       queue << GAQ::Events::TrackPageview.new
       queue << GAQ::Events::TrackPageLoadTime.new
+
+      additionalEvents.each do |event|
+        queue << event
+      end
 
       queue.to_s.html_safe
     end
