@@ -1,4 +1,4 @@
-require 'google-analytics-rails/view_helpers'
+require 'google-analytics/rails/view_helpers'
 
 module GoogleAnalytics::Rails
   # @private

@@ -1,4 +1,4 @@
-require 'google_analytics_tools'
+require 'active_support/core_ext/string/output_safety'
 
 module GoogleAnalytics::Rails
   # @example Ecommerce example
@@ -31,35 +31,37 @@ module GoogleAnalytics::Rails
   module ViewHelpers
     # Initializes the Analytics javascript. Put it in the `<head>` tag.
     #
-    # @param events [Array]
-    #   The page load times and page views are tracked by default, additional events can be added here.
     # @param options [Hash]
     # @option options [Boolean] :local (false) Sets the local development mode.
     #   See http://www.google.com/support/forum/p/Google%20Analytics/thread?tid=741739888e14c07a&hl=en
+    # @option options [Array, GoogleAnalytics::Event] :add_events ([]) The page load times and
+    #   page views are tracked by default, additional events can be added here.
     #
     # @example Set the local bit in development mode
     #   analytics_init :local => Rails.env.development?
     #
     # @example Allow links across domains
-    #   analytics_init [GAQ::Events::SetAllowLinker.new(true)]
+    #   analytics_init :add_events => Events::SetAllowLinker.new(true)
     #
     # @return [String] a `<script>` tag, containing the analytics initialization sequence.
     #
-    def analytics_init(events = [], options = {})
-      raise ArgumentError, "Tracker must be set! Did you set GAR.tracker ?" unless GAR.valid_tracker?
+    def analytics_init(options = {})
+      raise ArgumentError, "Tracker must be set! Did you set GA.tracker ?" unless GA.valid_tracker?
 
       local = options.delete(:local) || false
+      events = options.delete(:add_events) || []
+      events = [events] unless events.is_a?(Array)
 
       queue = GAQ.new
 
       # unshift => reverse order
-      events.unshift GAQ::Events::TrackPageLoadTime.new
-      events.unshift GAQ::Events::TrackPageview.new
-      events.unshift GAQ::Events::SetAccount.new(GAR.tracker)
+      events.unshift GA::Events::TrackPageLoadTime.new
+      events.unshift GA::Events::TrackPageview.new
+      events.unshift GA::Events::SetAccount.new(GA.tracker)
 
       if local
-        events.push GAQ::Events::SetDomainName.new('none')
-        events.push GAQ::Events::SetAllowLinker.new(true)
+        events.push GA::Events::SetDomainName.new('none')
+        events.push GA::Events::SetAllowLinker.new(true)
       end
 
       events.each do |event|
@@ -76,35 +78,35 @@ module GoogleAnalytics::Rails
     #
     #     analytics_track_event "Videos", "Play", "Gone With the Wind"
     #
-    def analytics_track_event(category, action, label, value)
-      analytics_render_event(GAQ::Events::TrackEvent.new(category, action, label, value))
+    def analytics_track_event(category, action, label = nil, value = nil)
+      analytics_render_event(GA::Events::TrackEvent.new(category, action, label, value))
     end
 
     # Track an ecommerce transaction
     # @see http://code.google.com/apis/analytics/docs/tracking/gaTrackingEcommerce.html
     def analytics_add_transaction(order_id, store_name, total, tax, shipping, city, state_or_province, country)
-      analytics_render_event(GAQ::Events::ECommerce::AddTransaction.new(order_id, store_name, total, tax, shipping, city, state_or_province, country))
+      analytics_render_event(GA::Events::Ecommerce::AddTransaction.new(order_id, store_name, total, tax, shipping, city, state_or_province, country))
     end
 
     # Add an item to the current transaction
     # @see http://code.google.com/apis/analytics/docs/tracking/gaTrackingEcommerce.html
     def analytics_add_item(order_id, product_id, product_name, product_variation, unit_price, quantity)
-      analytics_render_event(GAQ::Events::ECommerce::AddItem.new(order_id, product_id, product_name, product_variation, unit_price, quantity))
+      analytics_render_event(GA::Events::Ecommerce::AddItem.new(order_id, product_id, product_name, product_variation, unit_price, quantity))
     end
 
     # Flush the current transaction
     # @see http://code.google.com/apis/analytics/docs/tracking/gaTrackingEcommerce.html
     def analytics_track_transaction
-      analytics_render_event(GAQ::Events::ECommerce::TrackTransaction.new)
+      analytics_render_event(GA::Events::Ecommerce::TrackTransaction.new)
     end
 
     private
 
     def analytics_render_event(event)
-      raise ArgumentError, "Tracker must be set! Did you set GAR.tracker ?" unless GAR.valid_tracker?
+      raise ArgumentError, "Tracker must be set! Did you set GA.tracker ?" unless GA.valid_tracker?
       result = <<-JAVASCRIPT
 <script type="text/javascript">
-  #{GAQ::EventRenderer.new(event, nil).to_s}
+  #{GA::EventRenderer.new(event, nil).to_s}
 </script>
       JAVASCRIPT
       result.html_safe

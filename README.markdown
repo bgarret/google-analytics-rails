@@ -3,12 +3,9 @@ Fast Google Analytics setup for Rails.
 Installation
 ============
 
-*This gem needs the google_analytics_tools found at: https://github.com/bgarret/google_analytics_tools.*
-
 Add the following to your `Gemfile`:
 
     gem 'google-analytics-rails', :git => 'git://github.com/bgarret/google-analytics-rails.git'
-    gem 'google_analytics_tools', :git => 'git://github.com/bgarretgoogle_analytics_tools.git'
 
 Then run:
 
@@ -28,7 +25,7 @@ Production only
 `config/environments/production.rb`:
 
     # replace this with your tracker code
-    GAR.tracker = "UA-xxxxxx-x"
+    GA.tracker = "UA-xxxxxx-x"
 
 `app/views/layout/application.html.erb`, in the `<head>` tag :
 
