@@ -1,7 +1,8 @@
-In config/environments/production.rb :
+In `config/environments/production.rb` :
 
+    # replace this with your tracker code
     GAR.tracker = "UA-xxxxxx-x"
 
-In your layout, between the `<head>` tag :
+In your layout, in the `<head>` tag :
 
 		<%= analytics_init %>

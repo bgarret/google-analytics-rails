@@ -4,7 +4,7 @@ require "google-analytics-rails/version"
 
 Gem::Specification.new do |s|
   s.name        = "google-analytics-rails"
-  s.version     = Google::Analytics::Rails::VERSION
+  s.version     = GoogleAnalytics::Rails::VERSION
   s.platform    = Gem::Platform::RUBY
   s.authors     = ["Benoit Garret"]
   s.email       = ["benoit.garret@gadz.org"]
@@ -15,6 +15,9 @@ Gem::Specification.new do |s|
   s.rubyforge_project = "google-analytics-rails"
 
   s.add_dependency "google_analytics_tools"
+  s.add_development_dependency "yard"
+  s.add_development_dependency "yard-rails"
+  s.add_development_dependency "redcarpet"
 
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
