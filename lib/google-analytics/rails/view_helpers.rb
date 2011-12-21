@@ -15,7 +15,7 @@ module GoogleAnalytics::Rails
   #
   #     # note the double quotes around the onclick attribute,
   #     # they are necessary because the javascript is single quoted
-  #     <a href="my_url" onclick="javascript:<%= analytics_track_event "Videos", "Play", "Gone With the Wind" %>">Link</a>
+  #     <a href="my_url" onclick="<%= analytics_track_event "Videos", "Play", "Gone With the Wind" %>">Link</a>
   #
   # @example Full ecommerce example
   #
@@ -50,8 +50,8 @@ module GoogleAnalytics::Rails
     # @param options [Hash]
     # @option options [Boolean] :local (false) Sets the local development mode.
     #   See http://www.google.com/support/forum/p/Google%20Analytics/thread?tid=741739888e14c07a&hl=en
-    # @option options [Array, GoogleAnalytics::Event] :add_events ([]) The page load times and
-    #   page views are tracked by default, additional events can be added here.
+    # @option options [Array, GoogleAnalytics::Event] :add_events ([])
+    #   The page views are tracked by default, additional events can be added here.
     #
     # @example Set the local bit in development mode
     #   analytics_init :local => Rails.env.development?
@@ -71,7 +71,6 @@ module GoogleAnalytics::Rails
       queue = GAQ.new
 
       # unshift => reverse order
-      events.unshift GA::Events::TrackPageLoadTime.new
       events.unshift GA::Events::TrackPageview.new
       events.unshift GA::Events::SetAccount.new(GA.tracker)
 

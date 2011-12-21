@@ -24,12 +24,6 @@ module GoogleAnalytics
       end
     end
 
-    class TrackPageLoadTime < Event
-      def initialize
-        super('_trackPageLoadTime')
-      end
-    end
-
     class TrackEvent < Event
       def initialize(category, action, label = nil, value = nil)
         if label || value

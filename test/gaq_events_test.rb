@@ -19,12 +19,6 @@ class GAEventsTest < Test::Unit::TestCase
     assert_equal([], event.params)
   end
   
-  def test_track_pageview_event
-    event = GA::Events::TrackPageLoadTime.new
-    assert_equal('_trackPageLoadTime', event.name)
-    assert_equal([], event.params)
-  end
-
   def test_track_event_without_category_or_label
     event = GA::Events::TrackEvent.new('Search', 'Executed')
     assert_equal('_trackEvent', event.name)
