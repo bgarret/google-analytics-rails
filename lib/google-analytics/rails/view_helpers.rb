@@ -1,7 +1,23 @@
 require 'active_support/core_ext/string/output_safety'
 
 module GoogleAnalytics::Rails
-  # @example Ecommerce example
+  # All the helper methods output raw javascript with single quoted strings. This allows more flexbility in choosing when the event gets sent (on page load, on user action, etc).
+  #
+  # The only exception is {#analytics_init}, which is wrapped in a `<script>` tag.
+  #
+  # @example This event is always sent on page load
+  #
+  #     <script>
+  #       <%= analytics_track_event "Videos", "Play", "Gone With the Wind" %>
+  #     </script>
+  #
+  # @example This event is sent when the visitor clicks on the link
+  #
+  #     # note the double quotes around the onclick attribute,
+  #     # they are necessary because the javascript is single quoted
+  #     <a href="my_url" onclick="javascript:<%= analytics_track_event "Videos", "Play", "Gone With the Wind" %>">Link</a>
+  #
+  # @example Full ecommerce example
   #
   #     # create a new transaction
   #     analytics_add_transaction(
@@ -104,12 +120,7 @@ module GoogleAnalytics::Rails
 
     def analytics_render_event(event)
       raise ArgumentError, "Tracker must be set! Did you set GA.tracker ?" unless GA.valid_tracker?
-      result = <<-JAVASCRIPT
-<script type="text/javascript">
-  #{GA::EventRenderer.new(event, nil).to_s}
-</script>
-      JAVASCRIPT
-      result.html_safe
+      GA::EventRenderer.new(event, nil).to_s.html_safe
     end
   end
 end
