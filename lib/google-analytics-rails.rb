@@ -1,4 +1,3 @@
-require 'json'
 require 'google-analytics/async_tracking_queue'
 require 'google-analytics/events'
 
