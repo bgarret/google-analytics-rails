@@ -1,4 +1,5 @@
 require 'active_support/core_ext/string/output_safety'
+require 'active_support/core_ext/object/blank'
 
 module GoogleAnalytics::Rails
   # All the helper methods output raw javascript with single quoted strings. This allows more flexbility in choosing when the event gets sent (on page load, on user action, etc).
@@ -54,6 +55,8 @@ module GoogleAnalytics::Rails
     #   The page views are tracked by default, additional events can be added here.
     # @options options [String] :page
     #   The optional virtual page view to track through {GA::Events::TrackPageview.new}
+    # @options options [String] :tracker
+    #   The tracker to use instead of the default {GoogleAnalytics.tracker}
     #
     # @example Set the local bit in development mode
     #   analytics_init :local => Rails.env.development?
@@ -64,7 +67,10 @@ module GoogleAnalytics::Rails
     # @return [String] a `<script>` tag, containing the analytics initialization sequence.
     #
     def analytics_init(options = {})
-      raise ArgumentError, "Tracker must be set! Did you set GA.tracker ?" unless GA.valid_tracker?
+      unless tracker = options.delete(:tracker).presence
+        tracker = GA.tracker
+        raise ArgumentError, "Tracker must be set! Did you set GA.tracker ?" unless tracker
+      end
 
       local = options.delete(:local) || false
       events = options.delete(:add_events) || []
@@ -74,7 +80,7 @@ module GoogleAnalytics::Rails
 
       # unshift => reverse order
       events.unshift GA::Events::TrackPageview.new(options[:page])
-      events.unshift GA::Events::SetAccount.new(GA.tracker)
+      events.unshift GA::Events::SetAccount.new(tracker)
 
       if local
         events.push GA::Events::SetDomainName.new('none')
