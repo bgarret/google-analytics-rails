@@ -53,9 +53,9 @@ module GoogleAnalytics::Rails
     #   See http://www.google.com/support/forum/p/Google%20Analytics/thread?tid=741739888e14c07a&hl=en
     # @option options [Array, GoogleAnalytics::Event] :add_events ([])
     #   The page views are tracked by default, additional events can be added here.
-    # @options options [String] :page
+    # @option options [String] :page
     #   The optional virtual page view to track through {GA::Events::TrackPageview.new}
-    # @options options [String] :tracker
+    # @option options [String] :tracker
     #   The tracker to use instead of the default {GoogleAnalytics.tracker}
     #
     # @example Set the local bit in development mode
