@@ -18,7 +18,13 @@ class GAEventsTest < Test::Unit::TestCase
     assert_equal('_trackPageview', event.name)
     assert_equal([], event.params)
   end
-  
+
+  def test_track_pageview_event_with_virtual_page
+    event = GA::Events::TrackPageview.new('/foo/bar')
+    assert_equal('_trackPageview', event.name)
+    assert_equal(['/foo/bar'], event.params)
+  end
+
   def test_track_event_without_category_or_label
     event = GA::Events::TrackEvent.new('Search', 'Executed')
     assert_equal('_trackEvent', event.name)
