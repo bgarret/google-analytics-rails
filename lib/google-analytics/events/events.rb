@@ -19,8 +19,9 @@ module GoogleAnalytics
     end
 
     class TrackPageview < Event
-      def initialize
-        super('_trackPageview')
+      # @param page [String] optional virtual pageview tracking (see http://code.google.com/apis/analytics/docs/tracking/asyncMigrationExamples.html#VirtualPageviews)
+      def initialize(page = nil)
+        page && page != '' ? super('_trackPageview', page) : super('_trackPageview')
       end
     end
 
