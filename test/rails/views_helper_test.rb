@@ -21,6 +21,23 @@ var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga
     assert_equal(VALID_INIT, analytics_init)
   end
 
+  VALID_INIT_WITH_CUSTOM_TRACKER = <<-JAVASCRIPT
+<script type="text/javascript">
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount','UA-CUSTOM-XX']);
+_gaq.push(['_trackPageview']);
+(function() {
+var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+})();
+</script>
+  JAVASCRIPT
+
+  def test_analytics_init_with_custom_tracker
+    assert_equal(VALID_INIT_WITH_CUSTOM_TRACKER, analytics_init(:tracker => 'UA-CUSTOM-XX'))
+  end
+
   VALID_LOCAL_INIT = <<-JAVASCRIPT
 <script type="text/javascript">
 var _gaq = _gaq || [];
