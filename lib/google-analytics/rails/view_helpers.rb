@@ -52,6 +52,8 @@ module GoogleAnalytics::Rails
     #   See http://www.google.com/support/forum/p/Google%20Analytics/thread?tid=741739888e14c07a&hl=en
     # @option options [Array, GoogleAnalytics::Event] :add_events ([])
     #   The page views are tracked by default, additional events can be added here.
+    # @options options [String] :page
+    #   The optional virtual page view to track through {GA::Events::TrackPageview.new}
     #
     # @example Set the local bit in development mode
     #   analytics_init :local => Rails.env.development?
@@ -71,7 +73,7 @@ module GoogleAnalytics::Rails
       queue = GAQ.new
 
       # unshift => reverse order
-      events.unshift GA::Events::TrackPageview.new
+      events.unshift GA::Events::TrackPageview.new(options[:page])
       events.unshift GA::Events::SetAccount.new(GA.tracker)
 
       if local
