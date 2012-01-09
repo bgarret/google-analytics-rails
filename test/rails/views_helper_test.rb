@@ -21,7 +21,7 @@ var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga
     assert_equal(VALID_INIT, analytics_init)
   end
 
-  VALID_INIT_WITH_VIRUAL_PAGEVIEW = <<-JAVASCRIPT
+  VALID_INIT_WITH_VIRTUAL_PAGEVIEW = <<-JAVASCRIPT
 <script type="text/javascript">
 var _gaq = _gaq || [];
 _gaq.push(['_setAccount','TEST']);
@@ -35,7 +35,7 @@ var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga
   JAVASCRIPT
 
   def test_analytics_init_with_virtual_pageview
-    assert_equal(VALID_INIT_WITH_VIRUAL_PAGEVIEW, analytics_init(:page => '/some/virtual/url'))
+    assert_equal(VALID_INIT_WITH_VIRTUAL_PAGEVIEW, analytics_init(:page => '/some/virtual/url'))
   end
 
   VALID_INIT_WITH_CUSTOM_TRACKER = <<-JAVASCRIPT
