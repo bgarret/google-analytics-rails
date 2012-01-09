@@ -5,7 +5,7 @@ Installation
 
 Add the following to your `Gemfile`:
 
-    gem 'google-analytics-rails', :git => 'git://github.com/bgarret/google-analytics-rails.git'
+    gem 'google-analytics-rails'
 
 Then run:
 
