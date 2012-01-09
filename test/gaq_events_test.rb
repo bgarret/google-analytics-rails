@@ -12,7 +12,7 @@ class GAEventsTest < Test::Unit::TestCase
     assert_equal('_setDomainName', event.name)
     assert_equal(['foo.com'], event.params)
   end
-  
+
   def test_track_pageview_event
     event = GA::Events::TrackPageview.new
     assert_equal('_trackPageview', event.name)
@@ -60,7 +60,7 @@ class GAEventsTest < Test::Unit::TestCase
     assert_equal('_addItem', event.name)
     assert_equal(['1', '123', 'Bacon', 'Chunky', '5.0', '42'], event.params)
   end
-  
+
   def test_ecommerce_track_trans_event
     event = GA::Events::Ecommerce::TrackTransaction.new
     assert_equal('_trackTrans', event.name)
