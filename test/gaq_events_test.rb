@@ -12,13 +12,19 @@ class GAEventsTest < Test::Unit::TestCase
     assert_equal('_setDomainName', event.name)
     assert_equal(['foo.com'], event.params)
   end
-  
+
   def test_track_pageview_event
     event = GA::Events::TrackPageview.new
     assert_equal('_trackPageview', event.name)
     assert_equal([], event.params)
   end
-  
+
+  def test_track_pageview_event_with_virtual_page
+    event = GA::Events::TrackPageview.new('/foo/bar')
+    assert_equal('_trackPageview', event.name)
+    assert_equal(['/foo/bar'], event.params)
+  end
+
   def test_track_event_without_category_or_label
     event = GA::Events::TrackEvent.new('Search', 'Executed')
     assert_equal('_trackEvent', event.name)
@@ -54,7 +60,7 @@ class GAEventsTest < Test::Unit::TestCase
     assert_equal('_addItem', event.name)
     assert_equal(['1', '123', 'Bacon', 'Chunky', '5.0', '42'], event.params)
   end
-  
+
   def test_ecommerce_track_trans_event
     event = GA::Events::Ecommerce::TrackTransaction.new
     assert_equal('_trackTrans', event.name)
