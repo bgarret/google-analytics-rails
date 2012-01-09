@@ -48,3 +48,10 @@ Different accounts for development and production
 `app/views/layout/application.html.erb`, in the `<head>` tag :
 
 		<%= analytics_init :local => Rails.env.development? %>
+
+License
+=======
+
+[google-analytics-rails](https://github.com/bgarret.google-analytics-rails) is released under the MIT license:
+
+* http://www.opensource.org/licenses/MIT
