@@ -49,6 +49,12 @@ class GAEventsTest < Test::Unit::TestCase
     assert_equal(['Search', 'Executed', 'Son of Sam', 1], event.params)
   end
 
+  def test_set_custom_var
+    event = GA::Events::SetCustomVar.new(1, 'VarName1', 'VarVal1', 1)
+    assert_equal('_setCustomVar', event.name)
+    assert_equal([1, 'VarName1', 'VarVal1', 1], event.params)
+  end
+
   def test_ecommerce_add_transaction_event
     event = GA::Events::Ecommerce::AddTransaction.new(1, 'ACME', 123.45, 13.27, 75.35, 'Dallas', 'TX', 'USA')
     assert_equal('_addTrans', event.name)
