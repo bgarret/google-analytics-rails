@@ -38,12 +38,12 @@ Different accounts for development and production
 `config/environments/production.rb`:
 
     # replace this with your production tracker code
-    GAR.tracker = "UA-xxxxxx-x"
+    GA.tracker = "UA-xxxxxx-x"
 
 `config/environments/development.rb`:
 
     # replace this with your development tracker code
-    GAR.tracker = "UA-xxxxxx-x"
+    GA.tracker = "UA-xxxxxx-x"
 
 `app/views/layout/application.html.erb`, in the `<head>` tag :
 
