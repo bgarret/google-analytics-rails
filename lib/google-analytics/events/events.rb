@@ -19,7 +19,8 @@ module GoogleAnalytics
     end
 
     class TrackPageview < Event
-      # @param page [String] optional virtual pageview tracking (see http://code.google.com/apis/analytics/docs/tracking/asyncMigrationExamples.html#VirtualPageviews)
+      # @param page [String] optional virtual pageview tracking
+      # @see http://code.google.com/apis/analytics/docs/tracking/asyncMigrationExamples.html#VirtualPageviews
       def initialize(page = nil)
         page && page != '' ? super('_trackPageview', page) : super('_trackPageview')
       end
@@ -35,44 +36,50 @@ module GoogleAnalytics
       end
     end
 
+    # @see http://code.google.com/apis/analytics/docs/tracking/gaTrackingEcommerce.html
     module Ecommerce
+      # JavaScript equivalent:
+      #
+      #     _gaq.push(['_addTrans',
+      #       '1234',           // order ID - required
+      #       'Acme Clothing',  // affiliation or store name
+      #       '11.99',          // total - required
+      #       '1.29',           // tax
+      #       '5',              // shipping
+      #       'San Jose',       // city
+      #       'California',     // state or province
+      #       'USA'             // country
+      #     ]);
+      #
       class AddTransaction < Event
-
-        # _gaq.push(['_addTrans',
-        #   '1234',           // order ID - required
-        #   'Acme Clothing',  // affiliation or store name
-        #   '11.99',          // total - required
-        #   '1.29',           // tax
-        #   '5',              // shipping
-        #   'San Jose',       // city
-        #   'California',     // state or province
-        #   'USA'             // country
-        # ]);
-        #
         def initialize(order_id, store_name, total, tax, shipping, city, state_or_province, country)
           super('_addTrans', order_id.to_s, store_name.to_s, total.to_s, tax.to_s, shipping.to_s, city.to_s, state_or_province.to_s, country.to_s)
         end
       end
 
+      # JavaScript equivalent:
+      #
+      #     _gaq.push(['_addItem',
+      #       '1234',           // order ID - required
+      #       'DD44',           // SKU/code - required
+      #       'T-Shirt',        // product name
+      #       'Green Medium',   // category or variation
+      #       '11.99',          // unit price - required
+      #       '1'               // quantity - required
+      #     ]);
+      #
       class AddItem < Event
-
-        # _gaq.push(['_addItem',
-        #   '1234',           // order ID - required
-        #   'DD44',           // SKU/code - required
-        #   'T-Shirt',        // product name
-        #   'Green Medium',   // category or variation
-        #   '11.99',          // unit price - required
-        #   '1'               // quantity - required
-        # ]);
-        #
         def initialize(order_id, product_id, product_name, product_variation, unit_price, quantity)
           super('_addItem', order_id.to_s, product_id.to_s, product_name.to_s, product_variation.to_s, unit_price.to_s, quantity.to_s)
         end
 
       end
 
+      # JavaScript equivalent:
+      #
+      #     _gaq.push(['_trackTrans']);
+      #
       class TrackTransaction < Event
-        # _gaq.push(['_trackTrans']); // submits transaction to the Analytics servers
         def initialize
           super('_trackTrans')
         end
