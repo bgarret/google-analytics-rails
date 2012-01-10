@@ -109,10 +109,10 @@ module GoogleAnalytics::Rails
     # @see http://code.google.com/apis/analytics/docs/tracking/gaTrackingCustomVariables.html
     # You're allowed only 1-5 for the index.
     # The lifetime is defined by:
-    #  1 = visitor-level (default)
+    #  1 = visitor-level
     #  2 = session-level
-    #  3 = page-level
-    def analytics_set_custom_var(index, name, value, opt_scope = 1)
+    #  3 = page-level (default)
+    def analytics_set_custom_var(index, name, value, opt_scope = 3)
       analytics_render_event(GA::Events::SetCustomVar.new(index, name, value, opt_scope))
     end
 
