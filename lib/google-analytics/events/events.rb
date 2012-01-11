@@ -36,6 +36,12 @@ module GoogleAnalytics
       end
     end
 
+    class SetCustomVar < Event
+      def initialize(index, name, value, opt_scope)
+        super('_setCustomVar', index.to_i, name.to_s, value.to_s, opt_scope.to_i)
+      end
+    end
+
     # @see http://code.google.com/apis/analytics/docs/tracking/gaTrackingEcommerce.html
     module Ecommerce
       # JavaScript equivalent:

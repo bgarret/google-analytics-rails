@@ -105,6 +105,17 @@ module GoogleAnalytics::Rails
       analytics_render_event(GA::Events::TrackEvent.new(category, action, label, value))
     end
 
+    # Set a custom variable.
+    # @see http://code.google.com/apis/analytics/docs/tracking/gaTrackingCustomVariables.html
+    # You're allowed only 1-5 for the index.
+    # The lifetime is defined by:
+    #  1 = visitor-level
+    #  2 = session-level
+    #  3 = page-level (default)
+    def analytics_set_custom_var(index, name, value, opt_scope = 3)
+      analytics_render_event(GA::Events::SetCustomVar.new(index, name, value, opt_scope))
+    end
+
     # Track an ecommerce transaction
     # @see http://code.google.com/apis/analytics/docs/tracking/gaTrackingEcommerce.html
     def analytics_add_transaction(order_id, store_name, total, tax, shipping, city, state_or_province, country)
