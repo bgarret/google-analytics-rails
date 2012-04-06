@@ -13,6 +13,12 @@ class GAEventsTest < Test::Unit::TestCase
     assert_equal(['foo.com'], event.params)
   end
 
+  def test_set_site_speed_sample_rate_event
+    event = GA::Events::SetSiteSpeedSampleRate.new(5)
+    assert_equal('_setSiteSpeedSampleRate', event.name)
+    assert_equal([5], event.params)
+  end
+
   def test_track_pageview_event
     event = GA::Events::TrackPageview.new
     assert_equal('_trackPageview', event.name)

@@ -18,6 +18,15 @@ module GoogleAnalytics
       end
     end
 
+    class SetSiteSpeedSampleRate < Event
+      # @param sample_rate [Integer] the percentage of page views that should be used
+      #   for page speed metrics - defaults to 1 (aka 1%) if the event is missing.
+      # @see http://code.google.com/apis/analytics/docs/gaJS/gaJSApiBasicConfiguration.html#_gat.GA_Tracker_._setSiteSpeedSampleRate
+      def initialize(sample_rate)
+        super('_setSiteSpeedSampleRate', sample_rate)
+      end
+    end
+
     class TrackPageview < Event
       # @param page [String] optional virtual pageview tracking
       # @see http://code.google.com/apis/analytics/docs/tracking/asyncMigrationExamples.html#VirtualPageviews
