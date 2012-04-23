@@ -22,9 +22,10 @@ module GoogleAnalytics
       @events.each { |e| yield e }
     end
 
-    def size
-      @events.size
+    def length
+      @events.length
     end
+    alias_method :size, :length
 
   end
 end
