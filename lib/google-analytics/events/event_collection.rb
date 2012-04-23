@@ -21,5 +21,10 @@ module GoogleAnalytics
     def each
       @events.each { |e| yield e }
     end
+
+    def size
+      @events.size
+    end
+
   end
 end
