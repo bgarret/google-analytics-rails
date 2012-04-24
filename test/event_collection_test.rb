@@ -21,4 +21,22 @@ class EventCollectionTest < Test::Unit::TestCase
     assert_equal(event1, items[1])
     assert_equal(event3, items[2])
   end
+
+  def test_event_collection_delegates_size_and_length
+    ec = GA::EventCollection.new
+
+    assert(ec.respond_to?(:size))
+    assert(ec.respond_to?(:length))
+
+    assert_equal(0, ec.size)
+    assert_equal(ec.size, ec.length)
+
+    ec << GA::Event.new('sample', 'test')
+    assert_equal(1, ec.size)
+    assert_equal(ec.size, ec.length)
+
+    ec << GA::Event.new('sample2', 'test2')
+    assert_equal(2, ec.size)
+    assert_equal(ec.size, ec.length)
+  end
 end
