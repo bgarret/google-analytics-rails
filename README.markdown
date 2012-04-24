@@ -1,4 +1,4 @@
-Fast Google Analytics setup for Rails.
+Fast Google Analytics setup for Rails. This gem is mostly intended for small to medium websites with a simple analytics strategy.
 
 Installation
 ============
@@ -55,3 +55,9 @@ License
 [google-analytics-rails](https://github.com/bgarret.google-analytics-rails) is released under the MIT license:
 
 * http://www.opensource.org/licenses/MIT
+
+Thanks
+======
+
+Many thanks to [the people that took time to submit patches](https://github.com/bgarret/google-analytics-rails/contributors).
+
