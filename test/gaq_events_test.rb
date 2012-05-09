@@ -61,6 +61,12 @@ class GAEventsTest < Test::Unit::TestCase
     assert_equal([1, 'VarName1', 'VarVal1', 1], event.params)
   end
 
+  def test_set_custom_var_with_invalid_index
+    assert_raise ArgumentError do
+      GA::Events::SetCustomVar.new(6, 'VarName1', 'VarVal1', 1)
+    end
+  end
+
   def test_ecommerce_add_transaction_event
     event = GA::Events::Ecommerce::AddTransaction.new(1, 'ACME', 123.45, 13.27, 75.35, 'Dallas', 'TX', 'USA')
     assert_equal('_addTrans', event.name)

@@ -47,6 +47,7 @@ module GoogleAnalytics
 
     class SetCustomVar < Event
       def initialize(index, name, value, opt_scope)
+        raise ArgumentError, "The index has to be between 1 and 5" unless (1..5).include?(index.to_i)
         super('_setCustomVar', index.to_i, name.to_s, value.to_s, opt_scope.to_i)
       end
     end
