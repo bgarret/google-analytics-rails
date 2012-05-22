@@ -52,6 +52,13 @@ module GoogleAnalytics
       end
     end
 
+    class DeleteCustomVar < Event
+      def initialize(index)
+        raise ArgumentError, "The index has to be between 1 and 5" unless (1..5).include?(index.to_i)
+        super('_deleteCustomVar', index.to_i)
+      end
+    end
+
     # @see http://code.google.com/apis/analytics/docs/tracking/gaTrackingEcommerce.html
     module Ecommerce
       # JavaScript equivalent:
