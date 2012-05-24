@@ -77,6 +77,7 @@ class GAEventsTest < Test::Unit::TestCase
     assert_raise ArgumentError do
       GA::Events::DeleteCustomVar.new(6)
     end
+  end
 
   def test_ecommerce_add_transaction_event
     event = GA::Events::Ecommerce::AddTransaction.new(1, 'ACME', 123.45, 13.27, 75.35, 'Dallas', 'TX', 'USA')
