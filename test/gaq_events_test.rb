@@ -67,6 +67,18 @@ class GAEventsTest < Test::Unit::TestCase
     end
   end
 
+  def test_delete_custom_var
+    event = GA::Events::DeleteCustomVar.new(1)
+    assert_equal('_deleteCustomVar', event.name)
+    assert_equal([1], event.params)
+  end
+
+  def test_delete_custom_var_with_invalid_index
+    assert_raise ArgumentError do
+      GA::Events::DeleteCustomVar.new(6)
+    end
+  end
+
   def test_ecommerce_add_transaction_event
     event = GA::Events::Ecommerce::AddTransaction.new(1, 'ACME', 123.45, 13.27, 75.35, 'Dallas', 'TX', 'USA')
     assert_equal('_addTrans', event.name)
