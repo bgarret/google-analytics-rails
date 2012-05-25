@@ -67,6 +67,12 @@ class GAEventsTest < Test::Unit::TestCase
     end
   end
 
+  def test_anonymize_ip_event
+    event = GA::Events::AnonymizeIp.new
+    assert_equal('_gat._anonymizeIp', event.name)
+    assert_equal([], event.params)
+  end
+
   def test_ecommerce_add_transaction_event
     event = GA::Events::Ecommerce::AddTransaction.new(1, 'ACME', 123.45, 13.27, 75.35, 'Dallas', 'TX', 'USA')
     assert_equal('_addTrans', event.name)
