@@ -59,6 +59,18 @@ module GoogleAnalytics
       end
     end
 
+    # @see https://developers.google.com/analytics/devguides/collection/gajs/methods/gaJSApi_gat#_gat._anonymizeIp
+    #
+    # JavaScript equivalent:
+    #
+    #     _gaq.push(['_gat._anonymizeIp']);
+    #
+    class AnonymizeIp < Event
+      def initialize
+        super('_gat._anonymizeIp')
+      end
+    end
+
     # @see http://code.google.com/apis/analytics/docs/tracking/gaTrackingEcommerce.html
     module Ecommerce
       # JavaScript equivalent:
