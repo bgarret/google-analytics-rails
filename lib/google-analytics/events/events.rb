@@ -61,6 +61,8 @@ module GoogleAnalytics
 
     # @see https://developers.google.com/analytics/devguides/collection/gajs/methods/gaJSApi_gat#_gat._anonymizeIp
     #
+    # Anonymize the visitor IP address.
+    #
     # JavaScript equivalent:
     #
     #     _gaq.push(['_gat._anonymizeIp']);

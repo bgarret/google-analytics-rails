@@ -57,6 +57,8 @@ module GoogleAnalytics::Rails
     #   The optional virtual page view to track through {GoogleAnalytics::Events::TrackPageview}
     # @option options [String] :tracker
     #   The tracker to use instead of the default {GoogleAnalytics.tracker}
+    # @option options [Boolean] :anonymize
+    #   Whether to anonymize the visitor ip or not, see {GoogleAnalytics::Events::AnonymizeIp}
     #
     # @example Set the local bit in development mode
     #   analytics_init :local => Rails.env.development?
@@ -73,6 +75,7 @@ module GoogleAnalytics::Rails
       end
 
       local = options.delete(:local) || false
+      anonymize = options.delete(:anonymize) || false
       events = options.delete(:add_events) || []
       events = [events] unless events.is_a?(Array)
 
@@ -80,6 +83,8 @@ module GoogleAnalytics::Rails
 
       # unshift => reverse order
       events.unshift GA::Events::TrackPageview.new(options[:page])
+      # anonymize if needed before tracking the page view
+      events.unshift GA::Events::AnonymizeIp.new if anonymize
       events.unshift GA::Events::SetAccount.new(tracker)
 
       if local
