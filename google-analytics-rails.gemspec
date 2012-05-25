@@ -14,6 +14,7 @@ Gem::Specification.new do |s|
 
   s.rubyforge_project = "google-analytics-rails"
 
+  s.add_development_dependency "rake"
   s.add_development_dependency "yard"
   s.add_development_dependency "redcarpet"
   s.add_development_dependency "activesupport", "~>3.0"
