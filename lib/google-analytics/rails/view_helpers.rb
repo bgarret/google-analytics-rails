@@ -58,7 +58,9 @@ module GoogleAnalytics::Rails
     # @option options [String] :tracker
     #   The tracker to use instead of the default {GoogleAnalytics.tracker}
     # @option options [Boolean] :anonymize
-    #   Whether to anonymize the visitor ip or not, see {GoogleAnalytics::Events::AnonymizeIp}
+    #   Whether to anonymize the visitor ip or not.
+    #   This is required for european websites and actively enforced for german ones,
+    #   see {GoogleAnalytics::Events::AnonymizeIp}.
     #
     # @example Set the local bit in development mode
     #   analytics_init :local => Rails.env.development?

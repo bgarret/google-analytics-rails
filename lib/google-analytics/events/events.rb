@@ -61,7 +61,11 @@ module GoogleAnalytics
 
     # @see https://developers.google.com/analytics/devguides/collection/gajs/methods/gaJSApi_gat#_gat._anonymizeIp
     #
-    # Anonymize the visitor IP address.
+    # Anonymize the visitor IP address. This seems to be mandatory for European websites and actively enforced
+    # for German ones.
+    #
+    # See the following comment by Roland Moriz for more information:
+    # https://github.com/bgarret/google-analytics-rails/pull/6#issuecomment-5946066
     #
     # JavaScript equivalent:
     #
