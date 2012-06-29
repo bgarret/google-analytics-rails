@@ -1,3 +1,10 @@
+0.0.3
+=====
+
+* Fix #8, the directives were in the wrong order in development mode (thanks to @garnould).
+* Add support for the `_anonymizeIp` event (thanks to @rmoriz).
+* Add support for the `_deleteCustomVar` directive (thanks to @eirc).
+
 0.0.2
 =====
 
