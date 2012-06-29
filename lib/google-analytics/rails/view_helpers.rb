@@ -87,12 +87,12 @@ module GoogleAnalytics::Rails
       events.unshift GA::Events::TrackPageview.new(options[:page])
       # anonymize if needed before tracking the page view
       events.unshift GA::Events::AnonymizeIp.new if anonymize
+      if local
+        events.unshift GA::Events::SetDomainName.new('none')
+        events.unshift GA::Events::SetAllowLinker.new(true)
+      end
       events.unshift GA::Events::SetAccount.new(tracker)
 
-      if local
-        events.push GA::Events::SetDomainName.new('none')
-        events.push GA::Events::SetAllowLinker.new(true)
-      end
 
       events.each do |event|
         queue << event
