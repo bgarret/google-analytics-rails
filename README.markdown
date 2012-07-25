@@ -52,7 +52,7 @@ Different accounts for development and production
 License
 =======
 
-[google-analytics-rails](https://github.com/bgarret.google-analytics-rails) is released under the MIT license:
+[google-analytics-rails](https://github.com/bgarret/google-analytics-rails) is released under the MIT license:
 
 * http://www.opensource.org/licenses/MIT
 
