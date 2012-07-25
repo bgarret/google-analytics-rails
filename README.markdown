@@ -1,4 +1,4 @@
-Fast Google Analytics setup for Rails. This gem is mostly intended for small to medium websites with a simple analytics strategy.
+Fast Google Analytics setup for Rails 3. This gem is mostly intended for small to medium websites with a simple analytics strategy.
 
 Installation
 ============

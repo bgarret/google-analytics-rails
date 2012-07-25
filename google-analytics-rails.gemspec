@@ -9,8 +9,8 @@ Gem::Specification.new do |s|
   s.authors     = ["Benoit Garret"]
   s.email       = ["benoit.garret@gadz.org"]
   s.homepage    = "https://github.com/bgarret/google-analytics-rails"
-  s.summary     = %q{Rails helpers to manage google analytics tracking}
-  s.description = %q{Rails helpers to manage google analytics tracking}
+  s.summary     = %q{Rails 3 helpers to manage google analytics tracking}
+  s.description = %q{Rails 3 helpers to manage google analytics tracking}
 
   s.rubyforge_project = "google-analytics-rails"
 
