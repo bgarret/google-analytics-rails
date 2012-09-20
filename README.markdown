@@ -31,6 +31,15 @@ Production only
 
 		<%= analytics_init if Rails.env.production? %>
 
+With DoubleClick instead of vanilla Google Analytics script
+-----------------------------------------------------------
+
+`config/environments/production.rb`:
+
+    # replace this with your tracker code
+    GA.tracker = "UA-xxxxxx-x"
+    GA.source_script = "('https:' == document.location.protocol ? 'https://' : 'http://') + 'stats.g.doubleclick.net/dc.js'"
+
 
 Different accounts for development and production
 -------------------------------------------------
