@@ -40,6 +40,9 @@ With DoubleClick instead of vanilla Google Analytics script
     GA.tracker = "UA-xxxxxx-x"
     GA.source_script = "('https:' == document.location.protocol ? 'https://' : 'http://') + 'stats.g.doubleclick.net/dc.js'"
 
+`app/views/layout/application.html.erb`, in the `<head>` tag :
+
+		<%= analytics_init if Rails.env.production? %>
 
 Different accounts for development and production
 -------------------------------------------------
