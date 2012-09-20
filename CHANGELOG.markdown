@@ -1,3 +1,8 @@
+Unreleased
+=====
+
+* Support for custom analytics script src (so for example DoubleClick is supported).
+
 0.0.3
 =====
 
