@@ -57,6 +57,8 @@ module GoogleAnalytics::Rails
     #   The optional virtual page view to track through {GoogleAnalytics::Events::TrackPageview}
     # @option options [String] :tracker
     #   The tracker to use instead of the default {GoogleAnalytics.tracker}
+    # @option options [String] :domain
+    #   The domain name to track, see {GoogleAnalytics::Events::SetDomainName}
     # @option options [Boolean] :anonymize
     #   Whether to anonymize the visitor ip or not.
     #   This is required for european websites and actively enforced for german ones,
@@ -78,6 +80,7 @@ module GoogleAnalytics::Rails
 
       local = options.delete(:local) || false
       anonymize = options.delete(:anonymize) || false
+      domain = options.delete(:domain) || (local ? "none" : "auto")
       events = options.delete(:add_events) || []
       events = [events] unless events.is_a?(Array)
 
@@ -87,8 +90,8 @@ module GoogleAnalytics::Rails
       events.unshift GA::Events::TrackPageview.new(options[:page])
       # anonymize if needed before tracking the page view
       events.unshift GA::Events::AnonymizeIp.new if anonymize
+      events.unshift GA::Events::SetDomainName.new(domain)
       if local
-        events.unshift GA::Events::SetDomainName.new('none')
         events.unshift GA::Events::SetAllowLinker.new(true)
       end
       events.unshift GA::Events::SetAccount.new(tracker)
