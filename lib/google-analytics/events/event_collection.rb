@@ -1,3 +1,5 @@
+# coding: utf-8
+
 module GoogleAnalytics
   class EventCollection
     include Enumerable

@@ -1,3 +1,5 @@
+# coding: utf-8
+
 require 'google-analytics/async_tracking_queue'
 require 'google-analytics/events'
 

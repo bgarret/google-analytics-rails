@@ -1,3 +1,5 @@
+# coding: utf-8
+
 module GoogleAnalytics
   module Events
     class SetAccount < Event

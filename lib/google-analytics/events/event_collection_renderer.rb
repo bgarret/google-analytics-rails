@@ -1,3 +1,5 @@
+# coding: utf-8
+
 module GoogleAnalytics
   class EventCollectionRenderer
     def initialize(event_collection, tracker_id)

@@ -1,3 +1,5 @@
+# coding: utf-8
+
 module GoogleAnalytics
   autoload :Events, 'google-analytics/events/events'
   autoload :Event, 'google-analytics/events/event'
