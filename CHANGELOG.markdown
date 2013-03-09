@@ -1,7 +1,8 @@
-Unreleased
+0.0.4
 =====
 
-* Support for custom analytics script src (so for example DoubleClick is supported).
+* Support for custom analytics script src (DoubleClick is supported).
+* Add a `:domain` option to `analytics_init`.
 
 0.0.3
 =====
