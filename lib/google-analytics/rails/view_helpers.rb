@@ -52,7 +52,7 @@ module GoogleAnalytics::Rails
     #
     # @param options [Hash]
     # @option options [Boolean] :local (false) Sets the local development mode.
-    #   See http://www.google.com/support/forum/p/Google%20Analytics/thread?tid=741739888e14c07a&hl=en
+    #   See {http://www.google.com/support/forum/p/Google%20Analytics/thread?tid=741739888e14c07a&hl=en}
     # @option options [Array, GoogleAnalytics::Event] :add_events ([])
     #   The page views are tracked by default, additional events can be added here.
     # @option options [String] :page
@@ -67,8 +67,7 @@ module GoogleAnalytics::Rails
     #   see {GoogleAnalytics::Events::AnonymizeIp}.
     # @option options [Boolean] :enhanced_link_attribution
     #   See separate information for multiple links on a page that all have the same destination,
-    #   see https://support.google.com/analytics/answer/2558867.
-
+    #   see {https://support.google.com/analytics/answer/2558867}.
     #
     # @example Set the local bit in development mode
     #   analytics_init :local => Rails.env.development?
