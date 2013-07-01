@@ -65,6 +65,10 @@ module GoogleAnalytics::Rails
     #   Whether to anonymize the visitor ip or not.
     #   This is required for european websites and actively enforced for german ones,
     #   see {GoogleAnalytics::Events::AnonymizeIp}.
+    # @option options [Boolean] :enhanced_link_attribution
+    #   See separate information for multiple links on a page that all have the same destination,
+    #   see https://support.google.com/analytics/answer/2558867.
+
     #
     # @example Set the local bit in development mode
     #   analytics_init :local => Rails.env.development?
@@ -82,6 +86,7 @@ module GoogleAnalytics::Rails
 
       local = options.delete(:local) || false
       anonymize = options.delete(:anonymize) || false
+      link_attribution = options.delete(:enhanced_link_attribution) || false
       domain = options.delete(:domain) || (local ? "none" : "auto")
       events = options.delete(:add_events) || []
       events = [events] unless events.is_a?(Array)
@@ -97,7 +102,10 @@ module GoogleAnalytics::Rails
         events.unshift GA::Events::SetAllowLinker.new(true)
       end
       events.unshift GA::Events::SetAccount.new(tracker)
-
+      events.unshift GA::Events::Require.new(
+        'inpage_linkid',
+        '//www.google-analytics.com/plugins/ga/inpage_linkid.js'
+      ) if link_attribution
 
       events.each do |event|
         queue << event

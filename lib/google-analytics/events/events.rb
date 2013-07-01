@@ -20,6 +20,12 @@ module GoogleAnalytics
       end
     end
 
+    class Require < Event
+      def initialize(name, url)
+        super('_require', name, url)
+      end
+    end
+
     class SetSiteSpeedSampleRate < Event
       # @param sample_rate [Integer] the percentage of page views that should be used
       #   for page speed metrics - defaults to 1 (aka 1%) if the event is missing.
