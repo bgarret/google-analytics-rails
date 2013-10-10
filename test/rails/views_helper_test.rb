@@ -152,6 +152,25 @@ var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga
     assert_equal(VALID_EVENT_INIT, analytics_init(:add_events => GA::Events::SetAllowLinker.new(true)))
   end
 
+  VALID_EVENT_INIT_WITH_CUSTOM_VARS = <<-JAVASCRIPT
+<script type="text/javascript">
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount','TEST']);
+_gaq.push(['_setDomainName','auto']);
+_gaq.push(['_setCustomVar',1,'test','hoge',1]);
+_gaq.push(['_trackPageview']);
+(function() {
+var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+})();
+</script>
+  JAVASCRIPT
+
+  def test_analytics_init_with_custom_vars
+    assert_equal(VALID_EVENT_INIT_WITH_CUSTOM_VARS, analytics_init(:custom_vars => GA::Events::SetCustomVar.new(1, 'test', 'hoge',1)))
+  end
+
   VALID_TRACK_EVENT = "_gaq.push(['_trackEvent','Videos','Play','Gone With the Wind',null]);"
 
   def test_analytics_track_event
