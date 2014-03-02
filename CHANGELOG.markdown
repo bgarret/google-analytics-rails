@@ -1,3 +1,8 @@
+0.0.5
+=====
+
+* Enhanced link attribution.
+
 0.0.4
 =====
 
