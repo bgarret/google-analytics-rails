@@ -7,7 +7,7 @@ module GoogleAnalytics
   # @private
   PLACEHOLDER_TRACKER = "UA-xxxxxx-x"
   # @private
-  DEFAULT_SCRIPT_SOURCE = "('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js'"
+  DEFAULT_SCRIPT_SOURCE = "('https:' == document.location.protocol ? 'https://' : 'http://') + 'stats.g.doubleclick.net/dc.js'"
 
   # Get the current tracker id (*UA-xxxxxx-x*).
   # @return [String]
@@ -27,11 +27,12 @@ module GoogleAnalytics
   end
 
   # Get the current ga src.
-  # This allows for example to use the compatible doubleclick code :
+  # This allows for example to be used to disable the doubleclick code replacing it for the old code:
   # ```
-  #   ('https:' == document.location.protocol ? 'https://' : 'http://') + 'stats.g.doubleclick.net/dc.js'
+  #    ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js'
   # ```
   # @see http://support.google.com/analytics/bin/answer.py?hl=en&answer=2444872 for more info
+  # @see https://support.google.com/analytics/answer/2700409
   #
   # @return [String]
   def self.script_source
