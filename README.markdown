@@ -40,7 +40,7 @@ With DoubleClick instead of vanilla Google Analytics script
 
     # replace this with your tracker code
     GA.tracker = "UA-xxxxxx-x"
-    GA.script_source = "('https:' == document.location.protocol ? 'https://' : 'http://') + 'stats.g.doubleclick.net/dc.js'"
+    GA.script_source = :doubleclick
 
 `app/views/layout/application.html.erb`, in the `<head>` tag :
 

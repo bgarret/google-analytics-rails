@@ -6,8 +6,13 @@ require 'google-analytics/events'
 module GoogleAnalytics
   # @private
   PLACEHOLDER_TRACKER = "UA-xxxxxx-x"
+  # GA sources.
+  # Allowing easy switch between DEFAULT and DoubleClick scripts.
+  # @see http://support.google.com/analytics/bin/answer.py?hl=en&answer=2444872 for more info
+  #
   # @private
-  DEFAULT_SCRIPT_SOURCE = "('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js'"
+  SCRIPT_SOURCES = {default: "('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js'",
+                    doubleclick: "('https:' == document.location.protocol ? 'https://' : 'http://') + 'stats.g.doubleclick.net/dc.js'"}
 
   # Get the current tracker id (*UA-xxxxxx-x*).
   # @return [String]
@@ -26,22 +31,19 @@ module GoogleAnalytics
     tracker.nil? || tracker == "" || tracker == PLACEHOLDER_TRACKER ? false : true
   end
 
-  # Get the current ga src.
-  # This allows for example to use the compatible doubleclick code :
-  # ```
-  #   ('https:' == document.location.protocol ? 'https://' : 'http://') + 'stats.g.doubleclick.net/dc.js'
-  # ```
-  # @see http://support.google.com/analytics/bin/answer.py?hl=en&answer=2444872 for more info
-  #
   # @return [String]
   def self.script_source
-    @@src ||= DEFAULT_SCRIPT_SOURCE
+    @@src ||= SCRIPT_SOURCES[:default]
   end
 
   # Set the current ga src.
   # @return [String]
   def self.script_source=(src)
-    @@src = src
+    if SCRIPT_SOURCES.has_key?(src)
+      @@src = SCRIPT_SOURCES[src]
+    else
+      @@src = src
+    end
   end
 end
 
