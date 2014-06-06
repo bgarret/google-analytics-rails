@@ -1,3 +1,10 @@
+0.0.6
+=====
+
+* Add support for sending `custom_vars` in proper sequence while doing `analytics_init` [PR#20](https://github.com/bgarret/google-analytics-rails/pull/20) (thanks to @yonda).
+* Make switching between DoubleClick and default `ga.js` simpler. [PR#23](https://github.com/bgarret/google-analytics-rails/pull/23) (thanks to @rafamanzo).
+* Start testing the library regularly against Ruby 1.8.7, 1.9.2, 1.9.3, 2.0.0, 2.1, JRuby-1.8mode and JRuby-1.9mode.
+
 0.0.5
 =====
 
