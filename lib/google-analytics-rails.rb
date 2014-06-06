@@ -11,8 +11,10 @@ module GoogleAnalytics
   # @see http://support.google.com/analytics/bin/answer.py?hl=en&answer=2444872 for more info
   #
   # @private
-  SCRIPT_SOURCES = {default: "('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js'",
-                    doubleclick: "('https:' == document.location.protocol ? 'https://' : 'http://') + 'stats.g.doubleclick.net/dc.js'"}
+  SCRIPT_SOURCES = {
+    :default     => "('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js'",
+    :doubleclick => "('https:' == document.location.protocol ? 'https://' : 'http://') + 'stats.g.doubleclick.net/dc.js'",
+  }
 
   # Get the current tracker id (*UA-xxxxxx-x*).
   # @return [String]
