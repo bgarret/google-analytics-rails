@@ -6,8 +6,8 @@ Gem::Specification.new do |s|
   s.name        = "google-analytics-rails"
   s.version     = GoogleAnalytics::VERSION
   s.platform    = Gem::Platform::RUBY
-  s.authors     = ["Benoit Garret"]
-  s.email       = ["benoit.garret@gadz.org"]
+  s.authors     = ["Benoit Garret", "Ufuk Kayserilioglu"]
+  s.email       = ["benoit.garret@gadz.org", "ufuk@paralaus.com"]
   s.homepage    = "https://github.com/bgarret/google-analytics-rails"
   s.summary     = %q{Rails 3 helpers to manage google analytics tracking}
   s.description = %q{Rails 3 helpers to manage google analytics tracking}
