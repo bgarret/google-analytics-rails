@@ -122,7 +122,7 @@ module GoogleAnalytics::Rails
 
       queue = GAQ.new
       # unshift => reverse order
-      events.unshift GA::Events::TrackPageview.new({page: options[:page], title: options[:title]}) unless skip_pageview
+      events.unshift GA::Events::TrackPageview.new({:page => options[:page], :title => options[:title]}) unless skip_pageview
       # anonymize if needed before tracking the page view
       events.unshift GA::Events::AnonymizeIp.new if anonymize
       # custom_var if needed before tracking the page view
@@ -135,12 +135,12 @@ module GoogleAnalytics::Rails
       # If this is 'local' env, give the cookieDomain none, and allow linker
       if local
         events.unshift GA::Events::SetupAnalytics.new(tracker, setup.merge({
-          cookieDomain: 'none',
-          allowLinker: true
+          :cookieDomain => 'none',
+          :allowLinker => true
         }))
       # If we have any configs, we'll merge the cookieDomain in
       elsif setup.any?
-        events.unshift GA::Events::SetupAnalytics.new(tracker, setup.merge({ cookieDomain: domain }))
+        events.unshift GA::Events::SetupAnalytics.new(tracker, setup.merge({ :cookieDomain => domain }))
       # Just a normal request
       else
         events.unshift GA::Events::SetupAnalytics.new(tracker, domain)

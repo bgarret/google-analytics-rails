@@ -106,11 +106,11 @@ class GAEventsTest < Test::Unit::TestCase
     event = GA::Events::Ecommerce::AddTransaction.new(1, 'ACME', 123.45, 13.27, 75.35, 'Dallas', 'TX', 'USA')
     assert_equal('ecommerce:addTransaction', event.action)
     assert_equal({
-      id: '1',
-      affiliation: 'ACME',
-      revenue: '123.45',
-      tax: '13.27',
-      shipping: '75.35'
+      :id => '1',
+      :affiliation => 'ACME',
+      :revenue => '123.45',
+      :tax => '13.27',
+      :shipping => '75.35'
     }, event.name)
   end
 
@@ -118,11 +118,11 @@ class GAEventsTest < Test::Unit::TestCase
     event = GA::Events::Ecommerce::AddTransaction.new(1, 'ACME', 123.45, 13.27, 75.35)
     assert_equal('ecommerce:addTransaction', event.action)
     assert_equal({
-      id: '1',
-      affiliation: 'ACME',
-      revenue: '123.45',
-      tax: '13.27',
-      shipping: '75.35'
+      :id => '1',
+      :affiliation => 'ACME',
+      :revenue => '123.45',
+      :tax => '13.27',
+      :shipping => '75.35'
     }, event.name)
   end
 
@@ -130,12 +130,12 @@ class GAEventsTest < Test::Unit::TestCase
     event = GA::Events::Ecommerce::AddItem.new(1, 123, 'Bacon', 'Chunky', 5.00, 42)
     assert_equal('ecommerce:addItem', event.action)
     assert_equal({
-      id: '1',
-      sku: '123',
-      name: 'Bacon',
-      category: 'Chunky',
-      price: '5.0',
-      quantity: '42'
+      :id => '1',
+      :sku => '123',
+      :name => 'Bacon',
+      :category => 'Chunky',
+      :price => '5.0',
+      :quantity => '42'
     }, event.name)
   end
 

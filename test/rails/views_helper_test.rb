@@ -31,7 +31,7 @@ ga('t2.send','pageview');
   JAVASCRIPT
 
   def test_analytics_init_with_special_name
-    assert_equal(VALID_EVENT_WITH_NAME_INIT, analytics_init(name: 't2'))
+    assert_equal(VALID_EVENT_WITH_NAME_INIT, analytics_init(:name => 't2'))
   end
 
   VALID_INIT_WITH_VIRTUAL_PAGEVIEW = <<-JAVASCRIPT
@@ -61,7 +61,7 @@ ga('send','pageview',{"page":"/some/virtual/url","title":"Hello World"});
   JAVASCRIPT
 
   def test_analytics_init_with_virtual_pageview
-    assert_equal(VALID_INIT_WITH_VIRTUAL_PAGEVIEW_AND_TITLE, analytics_init(:page => '/some/virtual/url', title: 'Hello World'))
+    assert_equal(VALID_INIT_WITH_VIRTUAL_PAGEVIEW_AND_TITLE, analytics_init(:page => '/some/virtual/url', :title => 'Hello World'))
   end
 
   VALID_INIT_WITH_CUSTOM_TRACKER = <<-JAVASCRIPT

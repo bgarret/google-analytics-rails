@@ -17,13 +17,13 @@ module GoogleAnalytics
     private
       def attributes_hash(opts={})
         {
-          cookieDomain: opts.delete(:cookieDomain) || 'auto',
-          allowLinker: opts.delete(:allowLinker),
-          cookieName: opts.delete(:cookieName),
-          cookieExpires: opts.delete(:cookieExpires),
-          sampleRate: opts.delete(:sampleRate),
-          siteSpeedSampleRate: opts.delete(:siteSpeedSampleRate),
-          name: opts.delete(:name)
+          :cookieDomain => opts.delete(:cookieDomain) || 'auto',
+          :allowLinker => opts.delete(:allowLinker),
+          :cookieName => opts.delete(:cookieName),
+          :cookieExpires => opts.delete(:cookieExpires),
+          :sampleRate => opts.delete(:sampleRate),
+          :siteSpeedSampleRate => opts.delete(:siteSpeedSampleRate),
+          :name => opts.delete(:name)
         }.reject{|k,v| !v }
       end
     end
@@ -178,11 +178,11 @@ module GoogleAnalytics
           # city.to_s, state_or_province.to_s, country.to_s
 
           super('ecommerce:addTransaction', {
-            id: order_id.to_s,
-            affiliation: store_name.to_s,
-            revenue: total.to_s,
-            tax: tax.to_s,
-            shipping: shipping.to_s
+            :id => order_id.to_s,
+            :affiliation => store_name.to_s,
+            :revenue => total.to_s,
+            :tax => tax.to_s,
+            :shipping => shipping.to_s
           })
         end
       end
@@ -201,12 +201,12 @@ module GoogleAnalytics
       class AddItem < Event
         def initialize(order_id, product_id, product_name, product_variation, unit_price, quantity)
           super('ecommerce:addItem', {
-            id: order_id.to_s,
-            sku: product_id.to_s,
-            name: product_name.to_s,
-            category: product_variation.to_s,
-            price: unit_price.to_s,
-            quantity: quantity.to_s
+            :id => order_id.to_s,
+            :sku => product_id.to_s,
+            :name => product_name.to_s,
+            :category => product_variation.to_s,
+            :price => unit_price.to_s,
+            :quantity => quantity.to_s
           })
         end
       end
