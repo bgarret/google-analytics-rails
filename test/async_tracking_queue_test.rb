@@ -32,7 +32,7 @@ ga('t2.send','event',2);
     assert_equal(VALID_SNIPPET, gaq.to_s)
   end
 
-# TODO: Add Double Clip Snippet Support
+# TODO: Add Double Click Snippet Support
 #
 #   VALID_DOUBLECLICK_SNIPPET = <<-JAVASCRIPT
 # <script type="text/javascript">

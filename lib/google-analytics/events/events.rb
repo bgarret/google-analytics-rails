@@ -59,8 +59,10 @@ module GoogleAnalytics
     class SetSiteSpeedSampleRate
       # @param sample_rate [Integer] the percentage of page views that should be used
       #   for page speed metrics - defaults to 1 (aka 1%) if the event is missing.
+      attr_accessor :sample_rate
       def initialize(sample_rate)
-        warn "[REMOVED] `SetAllowLinker` is being removed. Universal Analytics does not support this any longer. Please see GoogleAnalytics::Events::SetupAnalytics"
+        @sample_rate = sample_rate
+        warn "[REMOVED] `SetSiteSpeedSampleRate` is being removed. Universal Analytics does not support this any longer. Please see GoogleAnalytics::Events::SetupAnalytics"
       end
     end
 

@@ -28,10 +28,7 @@ module GoogleAnalytics::Rails
   #       'Acme Clothing',  # affiliation or store name
   #       '11.99',          # total - required
   #       '1.29',           # tax
-  #       '5',              # shipping
-  #       'San Jose',       # city
-  #       'California',     # state or province
-  #       'USA'             # country
+  #       '5'               # shipping
   #     )
   #
   #     # add an item to the transaction
@@ -118,6 +115,11 @@ module GoogleAnalytics::Rails
         events.delete_if{|x| x.class.name == 'GoogleAnalytics::Events::SetAllowLinker' }
       end
 
+      if events.any?{|x| x.class.name == 'GoogleAnalytics::Events::SetSiteSpeedSampleRate' }
+        setup[:siteSpeedSampleRate] = events.select{|x| x.class.name == 'GoogleAnalytics::Events::SetSiteSpeedSampleRate' }.first.sample_rate
+        events.delete_if{|x| x.class.name == 'GoogleAnalytics::Events::SetSiteSpeedSampleRate' }
+      end
+
       queue = GAQ.new
       # unshift => reverse order
       events.unshift GA::Events::TrackPageview.new({page: options[:page], title: options[:title]}) unless skip_pageview
@@ -128,9 +130,7 @@ module GoogleAnalytics::Rails
         events.unshift custom_var
       end
 
-      events.unshift GA::Events::Require.new(
-        'linkid'
-      ) if link_attribution
+      events.unshift GA::Events::Require.new('linkid') if link_attribution
 
       # If this is 'local' env, give the cookieDomain none, and allow linker
       if local
@@ -182,6 +182,7 @@ module GoogleAnalytics::Rails
     # Track an ecommerce transaction
     # @see http://code.google.com/apis/analytics/docs/tracking/gaTrackingEcommerce.html
     def analytics_add_transaction(order_id, store_name, total, tax, shipping, city, state_or_province, country)
+      analytics_render_event(GA::Events::Require.new('ecommerce','ecommerce.js'))
       analytics_render_event(GA::Events::Ecommerce::AddTransaction.new(order_id, store_name, total, tax, shipping, city, state_or_province, country))
     end
 
