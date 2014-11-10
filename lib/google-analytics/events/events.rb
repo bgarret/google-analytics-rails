@@ -10,7 +10,7 @@ module GoogleAnalytics
         elsif opts.is_a?(Hash)
           super('create', account_id, attributes_hash(opts))
         else
-          super('create', account_id, {cookieDomain: opts})
+          super('create', account_id, {:cookieDomain => opts})
         end
       end
 
