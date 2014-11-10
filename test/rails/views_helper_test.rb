@@ -6,15 +6,12 @@ class ViewHelpersTest < Test::Unit::TestCase
 
   VALID_INIT = <<-JAVASCRIPT
 <script type="text/javascript">
-var _gaq = _gaq || [];
-_gaq.push(['_setAccount','TEST']);
-_gaq.push(['_setDomainName','auto']);
-_gaq.push(['_trackPageview']);
-(function() {
-var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-})();
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create','TEST','auto');
+ga('send','pageview');
 </script>
   JAVASCRIPT
 
@@ -22,17 +19,29 @@ var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga
     assert_equal(VALID_INIT, analytics_init)
   end
 
+  VALID_EVENT_WITH_NAME_INIT = <<-JAVASCRIPT
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create','TEST',{"cookieDomain":"auto","name":"t2"});
+ga('t2.send','pageview');
+</script>
+  JAVASCRIPT
+
+  def test_analytics_init_with_special_name
+    assert_equal(VALID_EVENT_WITH_NAME_INIT, analytics_init(name: 't2'))
+  end
+
   VALID_INIT_WITH_VIRTUAL_PAGEVIEW = <<-JAVASCRIPT
 <script type="text/javascript">
-var _gaq = _gaq || [];
-_gaq.push(['_setAccount','TEST']);
-_gaq.push(['_setDomainName','auto']);
-_gaq.push(['_trackPageview','/some/virtual/url']);
-(function() {
-var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-})();
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create','TEST','auto');
+ga('send','pageview','/some/virtual/url');
 </script>
   JAVASCRIPT
 
@@ -40,17 +49,29 @@ var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga
     assert_equal(VALID_INIT_WITH_VIRTUAL_PAGEVIEW, analytics_init(:page => '/some/virtual/url'))
   end
 
+  VALID_INIT_WITH_VIRTUAL_PAGEVIEW_AND_TITLE = <<-JAVASCRIPT
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create','TEST','auto');
+ga('send','pageview',{"page":"/some/virtual/url","title":"Hello World"});
+</script>
+  JAVASCRIPT
+
+  def test_analytics_init_with_virtual_pageview
+    assert_equal(VALID_INIT_WITH_VIRTUAL_PAGEVIEW_AND_TITLE, analytics_init(:page => '/some/virtual/url', title: 'Hello World'))
+  end
+
   VALID_INIT_WITH_CUSTOM_TRACKER = <<-JAVASCRIPT
 <script type="text/javascript">
-var _gaq = _gaq || [];
-_gaq.push(['_setAccount','UA-CUSTOM-XX']);
-_gaq.push(['_setDomainName','auto']);
-_gaq.push(['_trackPageview']);
-(function() {
-var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-})();
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create','UA-CUSTOM-XX','auto');
+ga('send','pageview');
 </script>
   JAVASCRIPT
 
@@ -60,15 +81,12 @@ var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga
 
   VALID_INIT_WITH_CUSTOM_DOMAIN = <<-JAVASCRIPT
 <script type="text/javascript">
-var _gaq = _gaq || [];
-_gaq.push(['_setAccount','TEST']);
-_gaq.push(['_setDomainName','example.com']);
-_gaq.push(['_trackPageview']);
-(function() {
-var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-})();
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create','TEST',{"cookieDomain":"example.com"});
+ga('send','pageview');
 </script>
   JAVASCRIPT
 
@@ -78,16 +96,12 @@ var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga
 
   VALID_LOCAL_INIT = <<-JAVASCRIPT
 <script type="text/javascript">
-var _gaq = _gaq || [];
-_gaq.push(['_setAccount','TEST']);
-_gaq.push(['_setAllowLinker',true]);
-_gaq.push(['_setDomainName','none']);
-_gaq.push(['_trackPageview']);
-(function() {
-var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-})();
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create','TEST',{"cookieDomain":"none","allowLinker":true});
+ga('send','pageview');
 </script>
   JAVASCRIPT
 
@@ -97,16 +111,13 @@ var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga
 
   VALID_INIT_WITH_ANONYMIZED_IP = <<-JAVASCRIPT
 <script type="text/javascript">
-var _gaq = _gaq || [];
-_gaq.push(['_setAccount','TEST']);
-_gaq.push(['_setDomainName','auto']);
-_gaq.push(['_gat._anonymizeIp']);
-_gaq.push(['_trackPageview']);
-(function() {
-var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-})();
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create','TEST','auto');
+ga('set','anonymizeIp',true);
+ga('send','pageview');
 </script>
   JAVASCRIPT
 
@@ -116,16 +127,13 @@ var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga
 
   VALID_INIT_WITH_LINK_ATTRIBUTION = <<-JAVASCRIPT
 <script type="text/javascript">
-var _gaq = _gaq || [];
-_gaq.push(['_require','inpage_linkid','//www.google-analytics.com/plugins/ga/inpage_linkid.js']);
-_gaq.push(['_setAccount','TEST']);
-_gaq.push(['_setDomainName','auto']);
-_gaq.push(['_trackPageview']);
-(function() {
-var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-})();
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create','TEST','auto');
+ga('require','linkid');
+ga('send','pageview');
 </script>
   JAVASCRIPT
 
@@ -135,16 +143,12 @@ var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga
 
   VALID_EVENT_INIT = <<-JAVASCRIPT
 <script type="text/javascript">
-var _gaq = _gaq || [];
-_gaq.push(['_setAccount','TEST']);
-_gaq.push(['_setDomainName','auto']);
-_gaq.push(['_trackPageview']);
-_gaq.push(['_setAllowLinker',true]);
-(function() {
-var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-})();
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create','TEST',{"cookieDomain":"auto","allowLinker":true});
+ga('send','pageview');
 </script>
   JAVASCRIPT
 
@@ -154,16 +158,13 @@ var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga
 
   VALID_EVENT_INIT_WITH_CUSTOM_VARS = <<-JAVASCRIPT
 <script type="text/javascript">
-var _gaq = _gaq || [];
-_gaq.push(['_setAccount','TEST']);
-_gaq.push(['_setDomainName','auto']);
-_gaq.push(['_setCustomVar',1,'test','hoge',1]);
-_gaq.push(['_trackPageview']);
-(function() {
-var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-})();
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create','TEST','auto');
+ga('set','dimension1','hoge');
+ga('send','pageview');
 </script>
   JAVASCRIPT
 
@@ -171,7 +172,11 @@ var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga
     assert_equal(VALID_EVENT_INIT_WITH_CUSTOM_VARS, analytics_init(:custom_vars => GA::Events::SetCustomVar.new(1, 'test', 'hoge',1)))
   end
 
-  VALID_TRACK_EVENT = "_gaq.push(['_trackEvent','Videos','Play','Gone With the Wind',null]);"
+  def test_analytics_init_with_custom_dimension
+    assert_equal(VALID_EVENT_INIT_WITH_CUSTOM_VARS, analytics_init(:custom_vars => GA::Events::SetCustomDimension.new(1, 'hoge')))
+  end
+
+  VALID_TRACK_EVENT = "ga('send','event','Videos','Play','Gone With the Wind',null);"
 
   def test_analytics_track_event
     event = analytics_track_event("Videos", "Play", "Gone With the Wind")
