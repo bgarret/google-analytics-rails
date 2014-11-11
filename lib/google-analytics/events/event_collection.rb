@@ -15,7 +15,7 @@ module GoogleAnalytics
     end
     
     def <<(event)
-      raise InvalidEventError.new(event) unless event.is_a?(Event)
+      raise InvalidEventError.new(event) unless event.is_a?(Event) || event.is_a?(SingleEvent)
 
       @events << event
     end
