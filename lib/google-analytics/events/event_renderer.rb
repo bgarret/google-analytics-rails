@@ -12,6 +12,8 @@ module GoogleAnalytics
     def to_s
       if @event.class.name == 'GoogleAnalytics::Events::SetupAnalytics'
         "ga('#{@event.action}',#{array_to_json([@event.name, *@event.params])});"
+      elsif @event.single_event?
+        "ga('#{@tracker_id ? [@tracker_id, @event.action].join('.') : @event.action}');"
       else
         "ga('#{@tracker_id ? [@tracker_id, @event.action].join('.') : @event.action}',#{array_to_json([@event.name, *@event.params])});"
       end

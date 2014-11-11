@@ -14,4 +14,13 @@ class EventRendererTest < Test::Unit::TestCase
     er = GA::EventRenderer.new(GA::Events::SetupAnalytics.new('TEST', {:name => 't2'}), 't2')
     assert_equal("ga('create','TEST',{\"cookieDomain\":\"auto\",\"name\":\"t2\"});", er.to_s)
   end
+
+  def test_single_event_renderer_yield_proper_javascript_snippit_for_transaction_send
+    er = GA::EventRenderer.new(GA::Events::Ecommerce::TrackTransaction.new, nil)
+    assert_equal("ga('ecommerce:send');", er.to_s)
+  end
+  def test_single_event_renderer_yield_proper_javascript_snippit_for_transaction_send_with_custom_tracker
+    er = GA::EventRenderer.new(GA::Events::Ecommerce::TrackTransaction.new, 't2')
+    assert_equal("ga('t2.ecommerce:send');", er.to_s)
+  end
 end

@@ -30,6 +30,7 @@ JAVASCRIPT
 
     def renderer_for_event(event, tracker_id)
       case event
+      when SingleEvent then EventRenderer.new(event, tracker_id)
       when Event then EventRenderer.new(event, tracker_id)
       when EventCollection then EventCollectionRenderer.new(event, tracker_id)
       end
