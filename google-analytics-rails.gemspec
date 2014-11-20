@@ -9,13 +9,10 @@ Gem::Specification.new do |s|
   s.authors     = ["Benoit Garret", "Ufuk Kayserilioglu"]
   s.email       = ["benoit.garret@gadz.org", "ufuk@paralaus.com"]
   s.homepage    = "https://github.com/bgarret/google-analytics-rails"
-  s.summary     = %q{Rails 3 helpers to manage google analytics tracking}
-  s.description = %q{Rails 3 helpers to manage google analytics tracking}
-
-  s.rubyforge_project = "google-analytics-rails"
+  s.summary     = %q{Rails helpers to manage google analytics tracking}
+  s.description = %q{Rails helpers to manage google analytics tracking}
 
   s.files         = `git ls-files`.split("\n")
-  s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
-  s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
+  s.test_files    = `git ls-files -- {test}/*`.split("\n")
   s.require_paths = ["lib"]
 end
