@@ -52,9 +52,4 @@ end
 # Alias for {GoogleAnalytics}
 GA = GoogleAnalytics
 
-if defined?(Rails)
-  require 'google-analytics/rails/railtie'
-
-  # Alias for {GoogleAnalytics::Rails}
-  GAR = GoogleAnalytics::Rails
-end
+require 'google-analytics/rails/railtie'

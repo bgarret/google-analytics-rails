@@ -27,11 +27,11 @@ Production only
 `config/environments/production.rb`:
 
     # replace this with your tracker code
-    GA.tracker = "UA-xxxxxx-x"
+    GA.tracker = "UA-112233-4"
 
 `app/views/layout/application.html.erb`, in the `<head>` tag :
 
-		<%= analytics_init if Rails.env.production? %>
+		<%= analytics_init if GoogleAnalytics.valid_tracker? %>
 
 With DoubleClick instead of vanilla Google Analytics script
 -----------------------------------------------------------
@@ -39,29 +39,29 @@ With DoubleClick instead of vanilla Google Analytics script
 `config/environments/production.rb`:
 
     # replace this with your tracker code
-    GA.tracker = "UA-xxxxxx-x"
+    GA.tracker = "UA-556677-8"
     GA.script_source = :doubleclick
 
 `app/views/layout/application.html.erb`, in the `<head>` tag :
 
-		<%= analytics_init if Rails.env.production? %>
+		<%= analytics_init if GoogleAnalytics.valid_tracker? %>
 
-Different accounts for development and production
+Different accounts for staging and production
 -------------------------------------------------
 
 `config/environments/production.rb`:
 
     # replace this with your production tracker code
-    GA.tracker = "UA-xxxxxx-x"
+    GA.tracker = "UA-990011-2"
 
-`config/environments/development.rb`:
+`config/environments/staging.rb`:
 
-    # replace this with your development tracker code
-    GA.tracker = "UA-xxxxxx-x"
+    # replace this with your staging tracker code
+    GA.tracker = "UA-334455-66"
 
 `app/views/layout/application.html.erb`, in the `<head>` tag :
 
-		<%= analytics_init :local => Rails.env.development? %>
+		<%= analytics_init if GoogleAnalytics.valid_tracker? %>
 
 License
 =======
