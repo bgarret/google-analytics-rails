@@ -4,6 +4,13 @@ require 'google-analytics/rails/view_helpers'
 class ViewHelpersTest < Test::Unit::TestCase
   include GoogleAnalytics::Rails::ViewHelpers
 
+  VALID_JS_INCLUDE = <<-JAVASCRIPT
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  JAVASCRIPT
+
   VALID_INIT = <<-JAVASCRIPT
 <script type="text/javascript">
 (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -19,176 +26,102 @@ ga('send','pageview');
     assert_equal(VALID_INIT, analytics_init)
   end
 
-  VALID_EVENT_WITH_NAME_INIT = <<-JAVASCRIPT
-<script type="text/javascript">
-(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-ga('create','TEST',{"cookieDomain":"auto","name":"t2"});
-ga('t2.send','pageview');
-</script>
-  JAVASCRIPT
-
   def test_analytics_init_with_special_name
-    assert_equal(VALID_EVENT_WITH_NAME_INIT, analytics_init(:name => 't2'))
+    str = analytics_init(:name => 't2').to_s
+    assert(str.include?(VALID_JS_INCLUDE))
+    assert_match(/.+ga\('create','TEST',\{.+\}\);.+/m, str)
+    assert_match(/.+"cookieDomain":"auto".+/m, str)
+    assert_match(/.+"name":"t2".+/m, str)
+    assert_match(/.+ga\('t2.send','pageview'\);.+/m, str)
   end
-
-  VALID_INIT_WITH_VIRTUAL_PAGEVIEW = <<-JAVASCRIPT
-<script type="text/javascript">
-(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-ga('create','TEST','auto');
-ga('send','pageview','/some/virtual/url');
-</script>
-  JAVASCRIPT
 
   def test_analytics_init_with_virtual_pageview
-    assert_equal(VALID_INIT_WITH_VIRTUAL_PAGEVIEW, analytics_init(:page => '/some/virtual/url'))
+    str = analytics_init(:page => '/some/virtual/url').to_s
+    assert(str.include?(VALID_JS_INCLUDE))
+    assert_match(/.+ga\('create','TEST','auto'\);.+/m, str)
+    assert_match(/.+ga\('send','pageview','\/some\/virtual\/url'\);.+/m, str)
   end
 
-  VALID_INIT_WITH_VIRTUAL_PAGEVIEW_AND_TITLE = <<-JAVASCRIPT
-<script type="text/javascript">
-(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-ga('create','TEST','auto');
-ga('send','pageview',{"page":"/some/virtual/url","title":"Hello World"});
-</script>
-  JAVASCRIPT
-
-  def test_analytics_init_with_virtual_pageview
-    assert_equal(VALID_INIT_WITH_VIRTUAL_PAGEVIEW_AND_TITLE, analytics_init(:page => '/some/virtual/url', :title => 'Hello World'))
+  def test_analytics_init_with_virtual_pageview_and_custom_title
+    str = analytics_init(:page => '/some/virtual/url', :title => 'Hello World').to_s
+    assert(str.include?(VALID_JS_INCLUDE))
+    assert_match(/.+ga\('create','TEST','auto'\);.+/m, str)
+    assert_match(/.+ga\('send','pageview'.+/m, str)
+    assert_match(/.+"page":"\/some\/virtual\/url".+/m, str)
+    assert_match(/.+"title":"Hello World".+/m, str)
   end
-
-  VALID_INIT_WITH_CUSTOM_TRACKER = <<-JAVASCRIPT
-<script type="text/javascript">
-(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-ga('create','UA-CUSTOM-XX','auto');
-ga('send','pageview');
-</script>
-  JAVASCRIPT
 
   def test_analytics_init_with_custom_tracker
-    assert_equal(VALID_INIT_WITH_CUSTOM_TRACKER, analytics_init(:tracker => 'UA-CUSTOM-XX'))
+    str = analytics_init(:tracker => 'UA-CUSTOM-XX').to_s
+    assert(str.include?(VALID_JS_INCLUDE))
+    assert_match(/.+ga\('create','UA-CUSTOM-XX','auto'\);.+/m, str)
+    assert_match(/.+ga\('send','pageview'\);.+/m, str)
   end
-
-  VALID_INIT_WITH_CUSTOM_DOMAIN = <<-JAVASCRIPT
-<script type="text/javascript">
-(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-ga('create','TEST',{"cookieDomain":"example.com"});
-ga('send','pageview');
-</script>
-  JAVASCRIPT
 
   def test_analytics_init_with_custom_domain
-    assert_equal(VALID_INIT_WITH_CUSTOM_DOMAIN, analytics_init(:domain => 'example.com'))
+    str = analytics_init(:domain => 'example.com').to_s
+    assert(str.include?(VALID_JS_INCLUDE))
+    assert_match(/.+ga\('create','TEST',\{"cookieDomain":"example.com"\}\);.+/m, str)
+    assert_match(/.+ga\('send','pageview'\);.+/m, str)
   end
-
-  VALID_LOCAL_INIT = <<-JAVASCRIPT
-<script type="text/javascript">
-(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-ga('create','TEST',{"cookieDomain":"none","allowLinker":true});
-ga('send','pageview');
-</script>
-  JAVASCRIPT
 
   def test_local_analytics_init
-    assert_equal(VALID_LOCAL_INIT, analytics_init(:local => true))
+    str = analytics_init(:local => true).to_s
+    assert(str.include?(VALID_JS_INCLUDE))
+    assert_match(/.+ga\('create','TEST',\{.+\}\);.+/m, str)
+    assert_match(/.+"cookieDomain":"none".+/m, str)
+    assert_match(/.+"allowLinker":true.+/m, str)
+    assert_match(/.+ga\('send','pageview'\);.+/m, str)
   end
-
-  VALID_INIT_WITH_ANONYMIZED_IP = <<-JAVASCRIPT
-<script type="text/javascript">
-(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-ga('create','TEST','auto');
-ga('set','anonymizeIp',true);
-ga('send','pageview');
-</script>
-  JAVASCRIPT
 
   def test_analytics_init_with_anonymized_ip
-    assert_equal(VALID_INIT_WITH_ANONYMIZED_IP, analytics_init(:anonymize => true))
+    str = analytics_init(:anonymize => true).to_s
+    assert(str.include?(VALID_JS_INCLUDE))
+    assert_match(/.+ga\('create','TEST','auto'\);.+/m, str)
+    assert_match(/.+ga\('set','anonymizeIp',true\);.+/m, str)
+    assert_match(/.+ga\('send','pageview'\);.+/m, str)
   end
-
-  VALID_INIT_WITH_LINK_ATTRIBUTION = <<-JAVASCRIPT
-<script type="text/javascript">
-(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-ga('create','TEST','auto');
-ga('require','linkid');
-ga('send','pageview');
-</script>
-  JAVASCRIPT
 
   def test_analytics_init_with_link_attribution
-    assert_equal(VALID_INIT_WITH_LINK_ATTRIBUTION, analytics_init(:enhanced_link_attribution => true))
+    str = analytics_init(:enhanced_link_attribution => true).to_s
+    assert(str.include?(VALID_JS_INCLUDE))
+    assert_match(/.+ga\('create','TEST','auto'\);.+/m, str)
+    assert_match(/.+ga\('require','linkid'\);.+/m, str)
+    assert_match(/.+ga\('send','pageview'\);.+/m, str)
   end
-
-  VALID_EVENT_INIT = <<-JAVASCRIPT
-<script type="text/javascript">
-(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-ga('create','TEST',{"cookieDomain":"auto","allowLinker":true});
-ga('send','pageview');
-</script>
-  JAVASCRIPT
 
   def test_analytics_init_with_events
-    assert_equal(VALID_EVENT_INIT, analytics_init(:add_events => GA::Events::SetAllowLinker.new(true)))
+    str = analytics_init(:add_events => GA::Events::SetAllowLinker.new(true)).to_s
+    assert(str.include?(VALID_JS_INCLUDE))
+    assert_match(/.+ga\('create','TEST',\{.+\}\);.+/m, str)
+    assert_match(/.+"cookieDomain":"auto".+/m, str)
+    assert_match(/.+"allowLinker":true.+/m, str)
+    assert_match(/.+ga\('send','pageview'\);.+/m, str)
   end
-
-  VALID_EVENT_INIT_WITH_SAMPLE_RATE = <<-JAVASCRIPT
-<script type="text/javascript">
-(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-ga('create','TEST',{"cookieDomain":"auto","siteSpeedSampleRate":5});
-ga('send','pageview');
-</script>
-  JAVASCRIPT
 
   def test_analytics_init_with_samplerate_events
-    assert_equal(VALID_EVENT_INIT_WITH_SAMPLE_RATE, analytics_init(:add_events => GA::Events::SetSiteSpeedSampleRate.new(5)))
+    str = analytics_init(:add_events => GA::Events::SetSiteSpeedSampleRate.new(5)).to_s
+    assert(str.include?(VALID_JS_INCLUDE))
+    assert_match(/.+ga\('create','TEST',\{.+\}\);.+/m, str)
+    assert_match(/.+"cookieDomain":"auto".+/m, str)
+    assert_match(/.+"siteSpeedSampleRate":5.+/m, str)
+    assert_match(/.+ga\('send','pageview'\);.+/m, str)
   end
 
-  VALID_EVENT_INIT_WITH_CUSTOM_VARS = <<-JAVASCRIPT
-<script type="text/javascript">
-(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-ga('create','TEST','auto');
-ga('set','dimension1','hoge');
-ga('send','pageview');
-</script>
-  JAVASCRIPT
-
   def test_analytics_init_with_custom_vars
-    assert_equal(VALID_EVENT_INIT_WITH_CUSTOM_VARS, analytics_init(:custom_vars => GA::Events::SetCustomVar.new(1, 'test', 'hoge',1)))
+    str = analytics_init(:custom_vars => GA::Events::SetCustomVar.new(1, 'test', 'hoge',1)).to_s
+    assert(str.include?(VALID_JS_INCLUDE))
+    assert_match(/.+ga\('create','TEST','auto'\);.+/m, str)
+    assert_match(/.+ga\('set','dimension1','hoge'\);.+/m, str)
+    assert_match(/.+ga\('send','pageview'\);.+/m, str)
   end
 
   def test_analytics_init_with_custom_dimension
-    assert_equal(VALID_EVENT_INIT_WITH_CUSTOM_VARS, analytics_init(:custom_vars => GA::Events::SetCustomDimension.new(1, 'hoge')))
+    str = analytics_init(:custom_vars => GA::Events::SetCustomDimension.new(1, 'hoge')).to_s
+    assert(str.include?(VALID_JS_INCLUDE))
+    assert_match(/.+ga\('create','TEST','auto'\);.+/m, str)
+    assert_match(/.+ga\('set','dimension1','hoge'\);.+/m, str)
+    assert_match(/.+ga\('send','pageview'\);.+/m, str)
   end
 
   VALID_TRACK_EVENT = "ga('send','event','Videos','Play','Gone With the Wind',null);"

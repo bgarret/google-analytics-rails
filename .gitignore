@@ -4,3 +4,4 @@ Gemfile.lock
 pkg/*
 .yardoc
 doc
+.DS_Store
