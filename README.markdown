@@ -13,6 +13,29 @@ Then run:
 
     bundle install
 
+Upgrade Notes
+============
+
+__Upgrading this gem from 0.0.6?__
+
+Use `analytics_init` to send submissions to Analytics if you are using multiple trackers. You can supply a name to tracker by passing `:name` option.
+
+**GoogleAnalytics::Events::SetAllowLinker** is no longer supported as an external variable being set. You can submit as normal in the `:add_events` array, but using the new `:setup` config is preferable so no extra array searching has to happen.
+
+**GoogleAnalytics::Events::SetCustomVar** is no longer supported by Universal Analytics. These have been changed to SetCustomDimension & SetCustomMetric. By default if you use SetCustomVar, it applies as a Dimension
+
+**GoogleAnalytics::Events::DeleteCustomVar** has been removed
+
+**Added Event Helpers**
+
+  - GoogleAnalytics::Events::ExperimentId
+  - GoogleAnalytics::Events::ExperimentVariation
+
+**TODO:** Add Double Click Snippet Support
+While the code is there, and it looks like it is simply changing the end path to the JS, this feature has not been tested.
+
+
+
 Documentation
 =============
 

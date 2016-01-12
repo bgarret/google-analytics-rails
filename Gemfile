@@ -2,6 +2,7 @@ source "http://rubygems.org"
 
 gem 'rake'
 gem 'yard'
+gem 'i18n', '< 0.7.0'
 gem 'activesupport', "~> 3.0"
 
 group :development do

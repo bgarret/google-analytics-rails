@@ -28,10 +28,7 @@ module GoogleAnalytics::Rails
   #       'Acme Clothing',  # affiliation or store name
   #       '11.99',          # total - required
   #       '1.29',           # tax
-  #       '5',              # shipping
-  #       'San Jose',       # city
-  #       'California',     # state or province
-  #       'USA'             # country
+  #       '5'               # shipping
   #     )
   #
   #     # add an item to the transaction
@@ -51,11 +48,19 @@ module GoogleAnalytics::Rails
     # Initializes the Analytics javascript. Put it in the `<head>` tag.
     #
     # @param options [Hash]
+    # @option options [String] :name
+    #   The name of the Universal Analytics Tracker
+    # @option options [Hash] :setup
+    #   Options for the initial Setup {GoogleAnalytics::Events::SetupAnalytics}
     # @option options [Boolean] :local (false) Sets the local development mode.
     #   See {http://www.google.com/support/forum/p/Google%20Analytics/thread?tid=741739888e14c07a&hl=en}
     # @option options [Array, GoogleAnalytics::Event] :add_events ([])
     #   The page views are tracked by default, additional events can be added here.
+    # @option options [Boolean] :skip_pageview
+    #   Turn off pageview tracking
     # @option options [String] :page
+    #   The optional virtual page view to track through {GoogleAnalytics::Events::TrackPageview}
+    # @option options [String] :title
     #   The optional virtual page view to track through {GoogleAnalytics::Events::TrackPageview}
     # @option options [String] :tracker
     #   The tracker to use instead of the default {GoogleAnalytics.tracker}
@@ -68,7 +73,7 @@ module GoogleAnalytics::Rails
     # @option options [Boolean] :enhanced_link_attribution
     #   See separate information for multiple links on a page that all have the same destination,
     #   see {https://support.google.com/analytics/answer/2558867}.
-    # @option options [Array, GoogleAnalytics::Events::SetCustomVar] :custom_vars ([])
+    # @option options [Array, GoogleAnalytics::Events::SetCustomDimension, GoogleAnalytics::Events::SetCustomMetric] :custom_vars ([])
     #
     # @example Set the local bit in development mode
     #   analytics_init :local => Rails.env.development?
@@ -85,36 +90,68 @@ module GoogleAnalytics::Rails
       end
 
       local = options.delete(:local) || false
+      setup = options.delete(:setup) || {}
+      tracker_name = options.delete(:name) || setup.fetch(:name, nil)
+
+      # Determine Name
+      setup[:name] ||= tracker_name if tracker_name
+
+      domain = options.delete(:domain) || (local ? "none" : "auto")
+
+      skip_pageview = options.delete(:skip_pageview) || false
       anonymize = options.delete(:anonymize) || false
       custom_vars = options.delete(:custom_vars) || []
       custom_vars = [custom_vars] unless custom_vars.is_a?(Array)
+
       link_attribution = options.delete(:enhanced_link_attribution) || false
-      domain = options.delete(:domain) || (local ? "none" : "auto")
+
+
       events = options.delete(:add_events) || []
       events = [events] unless events.is_a?(Array)
 
-      queue = GAQ.new
+      # Convert older classes when we can
+      if events.any?{|x| x.class.name == 'GoogleAnalytics::Events::SetAllowLinker' }
+        setup[:allowLinker] = !!events.any?{|x| x.class.name == 'GoogleAnalytics::Events::SetAllowLinker' }
+        events.delete_if{|x| x.class.name == 'GoogleAnalytics::Events::SetAllowLinker' }
+      end
 
+      if events.any?{|x| x.class.name == 'GoogleAnalytics::Events::SetSiteSpeedSampleRate' }
+        setup[:siteSpeedSampleRate] = events.select{|x| x.class.name == 'GoogleAnalytics::Events::SetSiteSpeedSampleRate' }.first.sample_rate
+        events.delete_if{|x| x.class.name == 'GoogleAnalytics::Events::SetSiteSpeedSampleRate' }
+      end
+
+      queue = GAQ.new
       # unshift => reverse order
-      events.unshift GA::Events::TrackPageview.new(options[:page])
+      events.unshift GA::Events::TrackPageview.new({:page => options[:page], :title => options[:title]}) unless skip_pageview
       # anonymize if needed before tracking the page view
       events.unshift GA::Events::AnonymizeIp.new if anonymize
       # custom_var if needed before tracking the page view
       custom_vars.each do |custom_var|
         events.unshift custom_var
       end
-      events.unshift GA::Events::SetDomainName.new(domain)
-      if local
-        events.unshift GA::Events::SetAllowLinker.new(true)
-      end
-      events.unshift GA::Events::SetAccount.new(tracker)
-      events.unshift GA::Events::Require.new(
-        'inpage_linkid',
-        '//www.google-analytics.com/plugins/ga/inpage_linkid.js'
-      ) if link_attribution
 
-      events.each do |event|
-        queue << event
+      events.unshift GA::Events::Require.new('linkid') if link_attribution
+
+      # If this is 'local' env, give the cookieDomain none, and allow linker
+      if local
+        events.unshift GA::Events::SetupAnalytics.new(tracker, setup.merge({
+          :cookieDomain => 'none',
+          :allowLinker => true
+        }))
+      # If we have any configs, we'll merge the cookieDomain in
+      elsif setup.any?
+        events.unshift GA::Events::SetupAnalytics.new(tracker, setup.merge({ :cookieDomain => domain }))
+      # Just a normal request
+      else
+        events.unshift GA::Events::SetupAnalytics.new(tracker, domain)
+      end
+
+      events.each do |evt|
+        if evt.class.name == 'GoogleAnalytics::Events::SetupAnalytics'
+          queue.push(evt)
+        else
+          queue.push(evt, tracker_name)
+        end
       end
 
       queue.to_s.html_safe
@@ -145,6 +182,7 @@ module GoogleAnalytics::Rails
     # Track an ecommerce transaction
     # @see http://code.google.com/apis/analytics/docs/tracking/gaTrackingEcommerce.html
     def analytics_add_transaction(order_id, store_name, total, tax, shipping, city, state_or_province, country)
+      analytics_render_event(GA::Events::Require.new('ecommerce','ecommerce.js'))
       analytics_render_event(GA::Events::Ecommerce::AddTransaction.new(order_id, store_name, total, tax, shipping, city, state_or_province, country))
     end
 
