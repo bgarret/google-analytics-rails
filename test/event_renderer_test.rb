@@ -10,6 +10,7 @@ class EventRendererTest < Test::Unit::TestCase
     er = GA::EventRenderer.new(GA::Event.new('send', 'something', 1, 2, 3), 't2')
     assert_equal("ga('t2.send','something',1,2,3);", er.to_s)
   end
+
   def test_event_renderer_yield_proper_javascript_snippit_for_custom_tracker_creation
     er = GA::EventRenderer.new(GA::Events::SetupAnalytics.new('TEST', {:name => 't2'}), 't2')
     assert_match(Regexp.new('"cookieDomain":"auto"'), er.to_s)

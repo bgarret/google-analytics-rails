@@ -23,7 +23,8 @@ module GoogleAnalytics
           :cookieExpires => opts.delete(:cookieExpires),
           :sampleRate => opts.delete(:sampleRate),
           :siteSpeedSampleRate => opts.delete(:siteSpeedSampleRate),
-          :name => opts.delete(:name)
+          :name => opts.delete(:name),
+          :userId => opts.delete(:userId)
         }.reject{|k,v| !v }
       end
     end

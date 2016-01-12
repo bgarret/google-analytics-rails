@@ -15,6 +15,7 @@ end
 
 group :test do
   gem 'json'
+  gem 'test-unit'
 end
 
 # Specify your gem's dependencies in google-analytics-rails.gemspec
