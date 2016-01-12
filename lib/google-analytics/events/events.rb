@@ -24,7 +24,7 @@ module GoogleAnalytics
           :sampleRate => opts.delete(:sampleRate),
           :siteSpeedSampleRate => opts.delete(:siteSpeedSampleRate),
           :name => opts.delete(:name),
-          :userId => opts.delete(:userId)
+          :userId => opts.delete(:userId) || opts.delete(:uid)
         }.reject{|k,v| !v }
       end
     end
