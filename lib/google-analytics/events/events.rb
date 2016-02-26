@@ -124,13 +124,13 @@ module GoogleAnalytics
 
     class SetCustomDimension < Event
       def initialize(index, value)
-        raise ArgumentError, "The index has to be between 1 and 5" unless (1..5).include?(index.to_i)
+        raise ArgumentError, "The index has to be between 1 and #{GA.max_custom_indices}" unless (1..GA.max_custom_indices).include?(index.to_i)
         super('set', "dimension#{index}", value.to_s)
       end
     end
     class SetCustomMetric < Event
       def initialize(index, value)
-        raise ArgumentError, "The index has to be between 1 and 5" unless (1..5).include?(index.to_i)
+        raise ArgumentError, "The index has to be between 1 and #{GA.max_custom_indices}" unless (1..GA.max_custom_indices).include?(index.to_i)
         super('set', "metric#{index}", value.to_s)
       end
     end
