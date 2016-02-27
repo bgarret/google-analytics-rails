@@ -1,3 +1,16 @@
+1.1.0
+=====
+
+* Added User ID Options [PR#30](https://github.com/bgarret/google-analytics-rails/pull/30)
+* Added Premium Account flag [PR#31](https://github.com/bgarret/google-analytics-rails/pull/31)
+* Added Custom Metrics & Dimensions 0-20/0-200 [PR#31](https://github.com/bgarret/google-analytics-rails/pull/31)
+* Removed support for Ruby 1.8.7
+
+1.0.0
+=====
+
+* Moved to Universal Analytics
+
 0.0.6
 =====
 
