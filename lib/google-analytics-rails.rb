@@ -15,6 +15,10 @@ module GoogleAnalytics
     :default     => "'//www.google-analytics.com/analytics.js'",
     :doubleclick => "'//stats.g.doubleclick.net/dc.js'",
   }
+  # @private
+  MAX_REGULAR_INDICES = 20
+  # @private
+  MAX_PREMIUM_INDICES = 200
 
   # Get the current tracker id (*UA-xxxxxx-x*).
   # @return [String]
@@ -46,6 +50,23 @@ module GoogleAnalytics
     else
       @@src = src
     end
+  end
+
+  # @return [Boolean]
+  def self.premium_account?
+    @@premium_account ||= false
+  end
+
+  # Set whether or not the property is held under a premium account
+  # @param [Boolean]
+  def self.premium_account=(value)
+    @@premium_account = value
+  end
+
+  # Return the maximum number of custom dimension/metric indices for this type of account
+  # @return [Integer]
+  def self.max_custom_indices
+    premium_account? ? MAX_PREMIUM_INDICES : MAX_REGULAR_INDICES
   end
 end
 

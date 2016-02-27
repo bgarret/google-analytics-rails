@@ -1,6 +1,10 @@
 require 'test_helper'
 
 class GAEventsTest < Test::Unit::TestCase
+  def setup
+    GA.premium_account = false
+  end
+
   def test_default_account_creation
     event = GA::Events::SetupAnalytics.new('ABC123')
     assert_equal('create', event.action)
@@ -69,6 +73,25 @@ class GAEventsTest < Test::Unit::TestCase
     assert_equal(['Search', 'Executed', 'Son of Sam', 1], event.params)
   end
 
+  def test_max_custom_indices_regular
+    assert_equal(GA::MAX_REGULAR_INDICES, GA.max_custom_indices)
+  end
+
+  def test_premium_account_defaults_to_false
+    GA.premium_account = nil
+    assert_equal(false, GA.premium_account?)
+  end
+
+  def test_max_custom_indices_defaults_to_regular
+    GA.premium_account = nil
+    assert_equal(GA::MAX_REGULAR_INDICES, GA.max_custom_indices)
+  end
+
+  def test_max_custom_indices_premium
+    GA.premium_account = true
+    assert_equal(GA::MAX_PREMIUM_INDICES, GA.max_custom_indices)
+  end
+
   def test_set_custom_dimension
     event = GA::Events::SetCustomDimension.new(1, 2)
     assert_equal('set', event.action)
@@ -76,9 +99,29 @@ class GAEventsTest < Test::Unit::TestCase
     assert_equal(['2'], event.params)
   end
 
+  def test_set_max_custom_dimension
+    assert_nothing_raised do
+      GA::Events::SetCustomDimension.new(GA::MAX_REGULAR_INDICES, 1)
+    end
+  end
+
   def test_set_custom_dimension_with_invalid_index
     assert_raise ArgumentError do
-      GA::Events::SetCustomDimension.new(6, 1)
+      GA::Events::SetCustomDimension.new(GA::MAX_REGULAR_INDICES + 1, 1)
+    end
+  end
+
+  def test_set_max_custom_dimension_premium_account
+    GA.premium_account = true
+    assert_nothing_raised do
+      GA::Events::SetCustomDimension.new(GA::MAX_PREMIUM_INDICES, 1)
+    end
+  end
+
+  def test_set_custom_dimension_with_invalid_index_premium_account
+    GA.premium_account = true
+    assert_raise ArgumentError do
+      GA::Events::SetCustomDimension.new(GA::MAX_PREMIUM_INDICES + 1, 1)
     end
   end
 
@@ -89,9 +132,29 @@ class GAEventsTest < Test::Unit::TestCase
     assert_equal(['2'], event.params)
   end
 
+  def test_set_max_custom_metric
+    assert_nothing_raised do
+      GA::Events::SetCustomMetric.new(GA::MAX_REGULAR_INDICES, 1)
+    end
+  end
+
   def test_set_custom_metric_with_invalid_index
     assert_raise ArgumentError do
-      GA::Events::SetCustomMetric.new(6, 1)
+      GA::Events::SetCustomMetric.new(GA::MAX_REGULAR_INDICES + 1, 1)
+    end
+  end
+
+  def test_set_max_custom_metric_premium_account
+    GA.premium_account = true
+    assert_nothing_raised do
+      GA::Events::SetCustomDimension.new(GA::MAX_PREMIUM_INDICES, 1)
+    end
+  end
+
+  def test_set_custom_metric_with_invalid_index_premium_account
+    GA.premium_account = true
+    assert_raise ArgumentError do
+      GA::Events::SetCustomDimension.new(GA::MAX_PREMIUM_INDICES + 1, 1)
     end
   end
 

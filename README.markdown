@@ -88,6 +88,17 @@ Different accounts for staging and production
 
 		<%= analytics_init if GoogleAnalytics.valid_tracker? %>
 
+Premium Google Analytics accounts
+---------------------------------
+
+`config/environments/production.rb`:
+
+    # add this if you have a premium account and need to use the additional dimension/metric indices
+    # - premium accounts are allowed to have 200 custom dimensions/metrics
+    # - regular accounts are allowed 20
+    # see also: https://support.google.com/analytics/answer/2709828?hl=en#Limits
+    GA.premium_account = true
+
 License
 =======
 
