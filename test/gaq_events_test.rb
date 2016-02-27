@@ -17,6 +17,21 @@ class GAEventsTest < Test::Unit::TestCase
     assert_equal('ABC123', event.name)
     assert_equal([{:cookieDomain=>"example.com"}], event.params)
   end
+
+  def test_account_creation_with_user_id
+    event = GA::Events::SetupAnalytics.new('ABC123', {:cookieDomain => 'example.com', :userId => 10})
+    assert_equal('create', event.action)
+    assert_equal('ABC123', event.name)
+    assert_equal([{:cookieDomain=>"example.com", :userId => 10}], event.params)
+  end
+
+  def test_account_creation_with_using_uid_for_user
+    event = GA::Events::SetupAnalytics.new('ABC123', {:cookieDomain => 'example.com', :uid => 10})
+    assert_equal('create', event.action)
+    assert_equal('ABC123', event.name)
+    assert_equal([{:cookieDomain=>"example.com", :userId => 10}], event.params)
+  end
+
   def test_account_creation_with_no_cookie_domain
     event = GA::Events::SetupAnalytics.new('ABC123', 'none')
     assert_equal('create', event.action)
