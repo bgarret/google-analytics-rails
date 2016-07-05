@@ -29,6 +29,9 @@ module GoogleAnalytics::Rails
   #       '11.99',          # total - required
   #       '1.29',           # tax
   #       '5'               # shipping
+  #       'San Jose',       # city
+  #       'California',     # state or province
+  #       'USA'             # country
   #     )
   #
   #     # add an item to the transaction
