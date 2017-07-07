@@ -9,7 +9,7 @@ Installation
 
 Add the following to your `Gemfile`:
 
-    gem 'google-analytics-rails', '1.1.0'
+    gem 'google-analytics-rails', '1.1.1'
 
 Then run:
 

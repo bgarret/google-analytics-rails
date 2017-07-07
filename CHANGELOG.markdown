@@ -1,3 +1,8 @@
+1.1.1
+=====
+
+* BUGFIX: https://github.com/bgarret/google-analytics-rails/issues/36
+
 1.1.0
 =====
 
