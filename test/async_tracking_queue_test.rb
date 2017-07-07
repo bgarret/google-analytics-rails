@@ -11,10 +11,10 @@ class AsyncTrackingQueueTest < Test::Unit::TestCase
 (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
 m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
 })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-ga('send','event',1);
-ga('send','event',2);
-ga('t2.send','event',1);
-ga('t2.send','event',2);
+ga("send","event",1);
+ga("send","event",2);
+ga("t2.send","event",1);
+ga("t2.send","event",2);
 </script>
   JAVASCRIPT
 
@@ -37,10 +37,10 @@ ga('t2.send','event',2);
 #   VALID_DOUBLECLICK_SNIPPET = <<-JAVASCRIPT
 # <script type="text/javascript">
 # var _gaq = _gaq || [];
-# _gaq.push(['event1',1]);
-# _gaq.push(['event2',2]);
-# _gaq.push(['t2.event1',1]);
-# _gaq.push(['t2.event2',2]);
+# _gaq.push(["event1",1]);
+# _gaq.push(["event2",2]);
+# _gaq.push(["t2.event1",1]);
+# _gaq.push(["t2.event2",2]);
 # (function() {
 # var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
 # ga.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'stats.g.doubleclick.net/dc.js';
@@ -70,10 +70,10 @@ ga('t2.send','event',2);
 (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
 m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
 })(window,document,'script','http://127.0.0.1/custom.js','ga');
-ga('send','event',1);
-ga('send','event',2);
-ga('t2.send','event',1);
-ga('t2.send','event',2);
+ga("send","event",1);
+ga("send","event",2);
+ga("t2.send","event",1);
+ga("t2.send","event",2);
 </script>
   JAVASCRIPT
 
