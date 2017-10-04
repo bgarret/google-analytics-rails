@@ -9,7 +9,9 @@ Installation
 
 Add the following to your `Gemfile`:
 
-    gem 'google-analytics-rails', '1.1.1'
+```ruby
+gem 'google-analytics-rails', '1.1.1'
+```
 
 Then run:
 
@@ -51,53 +53,69 @@ Production only
 
 `config/environments/production.rb`:
 
-    # replace this with your tracker code
-    GA.tracker = "UA-112233-4"
+```ruby
+# replace this with your tracker code
+GA.tracker = "UA-112233-4"
+```
 
 `app/views/layout/application.html.erb`, in the `<head>` tag :
 
-		<%= analytics_init if GoogleAnalytics.valid_tracker? %>
+```erb
+<%= analytics_init if GoogleAnalytics.valid_tracker? %>
+```
 
 With DoubleClick instead of vanilla Google Analytics script
 -----------------------------------------------------------
 
 `config/environments/production.rb`:
 
-    # replace this with your tracker code
-    GA.tracker = "UA-556677-8"
-    GA.script_source = :doubleclick
+```ruby
+# replace this with your tracker code
+GA.tracker = "UA-556677-8"
+GA.script_source = :doubleclick
+```
 
 `app/views/layout/application.html.erb`, in the `<head>` tag :
 
-		<%= analytics_init if GoogleAnalytics.valid_tracker? %>
+```erb
+<%= analytics_init if GoogleAnalytics.valid_tracker? %>
+```
 
 Different accounts for staging and production
 -------------------------------------------------
 
 `config/environments/production.rb`:
 
-    # replace this with your production tracker code
-    GA.tracker = "UA-990011-2"
+```ruby
+# replace this with your production tracker code
+GA.tracker = "UA-990011-2"
+```
 
 `config/environments/staging.rb`:
 
-    # replace this with your staging tracker code
-    GA.tracker = "UA-334455-66"
+```ruby
+# replace this with your staging tracker code
+GA.tracker = "UA-334455-66"
+```
 
 `app/views/layout/application.html.erb`, in the `<head>` tag :
 
-		<%= analytics_init if GoogleAnalytics.valid_tracker? %>
+```erb
+<%= analytics_init if GoogleAnalytics.valid_tracker? %>
+```
 
 Premium Google Analytics accounts
 ---------------------------------
 
 `config/environments/production.rb`:
 
-    # add this if you have a premium account and need to use the additional dimension/metric indices
-    # - premium accounts are allowed to have 200 custom dimensions/metrics
-    # - regular accounts are allowed 20
-    # see also: https://support.google.com/analytics/answer/2709828?hl=en#Limits
-    GA.premium_account = true
+```ruby
+# add this if you have a premium account and need to use the additional dimension/metric indices
+# - premium accounts are allowed to have 200 custom dimensions/metrics
+# - regular accounts are allowed 20
+# see also: https://support.google.com/analytics/answer/2709828?hl=en#Limits
+GA.premium_account = true
+```
 
 License
 =======
