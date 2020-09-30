@@ -2,7 +2,7 @@ Fast Universal Google Analytics setup for Rails. This gem is mostly intended for
 
 [![Build Status](https://travis-ci.org/bgarret/google-analytics-rails.png?branch=master)](https://travis-ci.org/bgarret/google-analytics-rails)
 
-_if you require older analytics, use `0.0.6`_
+For older analytics, please use `0.0.6`_
 
 Installation
 ============
