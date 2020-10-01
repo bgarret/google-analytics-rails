@@ -17,7 +17,7 @@ Then run:
 
     bundle install
 
-Upgrade Notes
+Upgraded Notes
 ============
 
 __Upgrading this gem from 0.0.6?__
@@ -40,12 +40,12 @@ While the code is there, and it looks like it is simply changing the end path to
 
 
 
-Documentation
+Documents
 =============
 
 http://rubydoc.info/github/bgarret/google-analytics-rails
 
-Example configurations
+Example configurations:-
 ======================
 
 Production only
@@ -124,7 +124,7 @@ License
 
 * http://www.opensource.org/licenses/MIT
 
-Thanks
+Thank You
 ======
 
 Many thanks to [the people that took time to submit patches](https://github.com/bgarret/google-analytics-rails/contributors).
