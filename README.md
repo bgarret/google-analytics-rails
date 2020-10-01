@@ -15,7 +15,7 @@ gem 'google-analytics-rails', '1.1.1'
 
 Then run:
 
-    bundle install
+   Bundle Install
 
 Upgrade Notes
 ============
