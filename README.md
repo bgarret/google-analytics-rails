@@ -1,3 +1,4 @@
+Smart Google Analytics Setup Instructions For Rails
 Fast Universal Google Analytics setup for Rails. This gem is mostly intended for small to medium websites with a simple analytics strategy.
 
 [![Build Status](https://travis-ci.org/bgarret/google-analytics-rails.png?branch=master)](https://travis-ci.org/bgarret/google-analytics-rails)
