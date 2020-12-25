@@ -21,6 +21,7 @@ module GoogleAnalytics
           :allowLinker => opts.delete(:allowLinker),
           :cookieName => opts.delete(:cookieName),
           :cookieExpires => opts.delete(:cookieExpires),
+          :cookieFlags => opts.delete(:cookieFlags),
           :sampleRate => opts.delete(:sampleRate),
           :siteSpeedSampleRate => opts.delete(:siteSpeedSampleRate),
           :name => opts.delete(:name),
